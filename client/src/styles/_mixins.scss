@@ -1,0 +1,9 @@
+@mixin displayFlex($justifyContent: center, $alignItems: center) {
+  display: flex;
+  justify-content: $justifyContent;
+  align-items: $alignItems;
+}
+
+@mixin whiteFilter() {
+  filter: invert(99%) sepia(67%) saturate(195%) hue-rotate(116deg) brightness(114%) contrast(100%);
+}

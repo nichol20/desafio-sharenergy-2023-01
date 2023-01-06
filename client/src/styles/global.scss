@@ -1,0 +1,21 @@
+@use './colors';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: colors.$main-background;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.App {
+  width: 100%;
+  min-height: 100vh;
+}

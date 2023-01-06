@@ -1,0 +1,97 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.cat_api {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  @include mixins.displayFlex();
+  height: 100%;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.field {
+  @include mixins.displayFlex();
+  flex-direction: column;
+  user-select: none;
+
+  label {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  .input_box {
+    width: 150px;
+    @include mixins.displayFlex();
+    padding: 5px 10px;
+    background: colors.$input-background-primary;
+    border: 1px solid colors.$input-border-primary;
+    border-radius: 4px;
+
+    &:has(> input:focus) {
+      border-color: colors.$input-border-primary-selected;
+    }
+
+    input {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      font-size: 1em;
+      width: 100%;
+    }
+
+    img {
+      width: 20px;
+    }
+  }
+}
+
+.cat_image_container {
+  max-width: 500px;
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 4px;
+
+  .image_box {
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.reference_link_box {
+  @include mixins.displayFlex();
+  border: 1px solid colors.$input-border-primary-selected;
+  border-radius: 6px;
+  background-color: colors.$input-background-primary;
+
+  .reference_link {
+    color: colors.$text-primary;
+    font-size: .875em;
+    padding: 2px 4px;
+    font-weight: 500;
+  }
+
+  .copy_button {
+    width: 26px;
+    height: 26px;
+    padding: 4px;
+    border: none;
+    background-color: colors.$background-button-primary;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: colors.$background-button-primary-hovered;
+    }
+
+    img {
+      @include mixins.whiteFilter();
+    }
+  }
+}

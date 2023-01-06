@@ -1,0 +1,97 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+$menu-icon: '../../assets/menu.svg';
+$close-icon: '../../assets  /close.svg';
+
+.header {
+  width: 100%;
+  padding: 10px 30px 5px 30px;
+  background-color: colors.$main-background;
+  @include mixins.displayFlex(flex-start);
+  position: relative;
+
+  @include media("desktop") {
+    padding: 5px 10px; 
+  }
+
+  .logo {
+    font-size: 1.5em;
+    color: colors.$text-primary;
+
+    @include media("desktop") {
+      font-size: 1.2em;
+    }
+  }
+
+  .nav_bar {
+    @include mixins.displayFlex();
+    margin-left: auto;
+
+    .toggle_menu {
+      position: fixed;
+      right: 14px;
+      top: 7px;
+      width: 35px;
+      height: 35px;
+      border: none;
+      background: url($menu-icon);
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 1000;
+      display: none;
+  
+      &.active {
+        background: url($close-icon)
+      }
+  
+      &.active ~ .nav_list {
+        display: flex;
+      }
+  
+      @include media("tablet") {
+        display: block;
+      }
+    }
+    
+    .nav_list {
+      @include mixins.displayFlex();
+      gap: 20px;
+      list-style: none;
+      font-weight: 500;
+
+      @include media("tablet") {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        flex-direction: column;
+        background-color: colors.$main-background;
+        font-size: 1.5em;
+      }
+
+      .nav_item {
+        white-space: nowrap;
+
+        .link {
+          cursor: pointer;
+          border-bottom: 1px solid transparent;
+          transition: .3s;
+          text-decoration: none;
+          color: colors.$text-primary;
+
+          &:hover {
+            color: colors.$text-primary-hovered;
+          }
+
+          @include media("desktop") {
+            font-size: .875em;
+          }
+        }
+      }
+    }
+  }
+}
