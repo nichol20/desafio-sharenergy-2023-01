@@ -1,6 +1,6 @@
-export const apiUrl = 'https://http.cat'
+export const apiUrl: string = 'https://http.cat'
 
-export const availableHttpCodes = [
+export const availableHttpCodes: number[] = [
   100,
   101,
   102,
