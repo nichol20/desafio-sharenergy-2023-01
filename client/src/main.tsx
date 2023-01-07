@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import App from './App'
-import { RandomUsersPage, LoginPage, CatApiPage } from './components'
+import { RandomUsersPage, LoginPage, HttpCatPage } from './components'
 import { AuthProvider } from './contexts/AuthContext'
 import './styles/global.scss'
 
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <CatApiPage />
+        element: <HttpCatPage />
       }
     ]
   },

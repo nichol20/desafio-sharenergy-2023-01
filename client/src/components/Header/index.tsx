@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import styles from './style.module.scss'
 
 const pages: any = {
-  '/': 'Random users',
-  'cat-api': 'Cat api',
-  'random-dog': 'Random dog',
+  '/': 'RandomUsers',
+  'http-cat': 'HttpCat',
+  'random-dog': 'RandomDog',
   'clients-registration': 'Cadastro de clientes'
 }
 
