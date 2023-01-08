@@ -128,22 +128,12 @@
 
   .login_button {
     padding: 8px 12px;
-    background-color: colors.$background-button-primary;
-    color: colors.$text-button-primary;
     font-size: 1.200em;
     font-weight: 600;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: .3s;
     width: 200px;
     height: 50px;
     margin-top: 10px;
-    box-shadow: 2px 2px 5px 1px colors.$light-shadow;
-
-    &:hover {
-      background-color: colors.$background-button-primary-hovered;
-    }
+    @include mixins.buttonStylePrimary();
 
     @include media('phone') {
       width: 150px;

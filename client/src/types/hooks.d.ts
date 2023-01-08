@@ -1,0 +1,1 @@
+export type UseDebounce = <T>(value: T, delay: number) => T

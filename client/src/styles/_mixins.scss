@@ -1,3 +1,5 @@
+@use './colors'; 
+
 @mixin displayFlex($justifyContent: center, $alignItems: center) {
   display: flex;
   justify-content: $justifyContent;
@@ -6,4 +8,28 @@
 
 @mixin whiteFilter() {
   filter: invert(99%) sepia(67%) saturate(195%) hue-rotate(116deg) brightness(114%) contrast(100%);
+}
+
+@mixin pageStyle() {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  @include displayFlex();
+  min-height: 100%;
+  flex-direction: column;
+}
+
+@mixin buttonStylePrimary() {
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: .3s;
+  background-color: colors.$background-button-primary;
+  color: colors.$text-button-primary;
+  box-shadow: 2px 2px 5px 1px colors.$light-shadow;
+  
+  &:hover {
+    background-color: colors.$background-button-primary-hovered;
+  }
 }

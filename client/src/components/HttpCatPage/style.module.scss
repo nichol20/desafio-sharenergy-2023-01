@@ -3,13 +3,7 @@
 @use '../../styles/medias' as *;
 
 .cat_api {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
-  @include mixins.displayFlex();
-  height: 100%;
-  flex-direction: column;
+  @include mixins.pageStyle();
   gap: 25px;
 }
 
@@ -59,38 +53,6 @@
 
     img {
       width: 100%;
-    }
-  }
-}
-
-.reference_link_box {
-  @include mixins.displayFlex();
-  border: 1px solid colors.$input-border-primary-selected;
-  border-radius: 6px;
-  background-color: colors.$input-background-primary;
-
-  .reference_link {
-    color: colors.$text-primary;
-    font-size: .875em;
-    padding: 2px 4px;
-    font-weight: 500;
-  }
-
-  .copy_button {
-    width: 26px;
-    height: 26px;
-    padding: 4px;
-    border: none;
-    background-color: colors.$background-button-primary;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: colors.$background-button-primary-hovered;
-    }
-
-    img {
-      @include mixins.whiteFilter();
     }
   }
 }

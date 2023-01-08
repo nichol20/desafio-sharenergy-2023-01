@@ -1,4 +1,6 @@
 export { LoginPage } from './LoginPage'
 export { RandomUsersPage } from './RandomUsersPage'
 export { HttpCatPage } from './HttpCatPage'
+export { RandomDogPage } from './RandomDogPage'
 export { Header } from './Header'
+export { ClientsRegistrationPage } from './ClientsRegistrationPage'

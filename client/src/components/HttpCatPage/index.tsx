@@ -2,8 +2,9 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 import { catHoldingSearchSignImg, copyIcon, notFoundImg, searchIcon } from '../../assets'
-import { apiUrl, availableHttpCodes } from '../../data/httpCat'
+import { httpCatApiUrl, availableHttpCodes } from '../../data/httpCat'
 import { useDebounce } from '../../hooks/useDebounce'
+import { ReferenceLink } from '../ReferenceLink'
 
 import styles from './style.module.scss'
 
@@ -14,10 +15,6 @@ export const HttpCatPage = () => {
   const [ httpCode, setHttpCode ] = useState('')
   const debouncedHttpCode = useDebounce(httpCode, 300)
 
-  const copyReferenceLinkToClipboard = () => {
-    navigator.clipboard.writeText(referenceLink)
-  }
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHttpCode(event.target.value)
   }
@@ -26,7 +23,7 @@ export const HttpCatPage = () => {
     setHttpCodeUnavailableError(false)
     if(httpCode.length === 0) return setRequestUrl(catHoldingSearchSignImg)
 
-    const newRequestUrl = `${apiUrl}/${httpCode}`
+    const newRequestUrl = `${httpCatApiUrl}/${httpCode}`
     const isHttpCodeAvailable = availableHttpCodes.filter(value => value === parseInt(httpCode)).length > 0
 
     if(!isHttpCodeAvailable) {
@@ -59,12 +56,7 @@ export const HttpCatPage = () => {
         { httpCodeUnavailableError && <span className={styles.error_message}>Desculpe, mas esse código não está disponível.</span> } 
       </div>
 
-      <div className={styles.reference_link_box}>
-        <span className={styles.reference_link}>{referenceLink}</span>
-        <button className={styles.copy_button} onClick={copyReferenceLinkToClipboard}>
-          <img src={copyIcon} alt="copy"/>
-        </button>
-      </div>
+      <ReferenceLink link={referenceLink} />
       
       <div className={styles.cat_image_container}>
         <div className={styles.image_box}>

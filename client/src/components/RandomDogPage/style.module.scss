@@ -1,0 +1,32 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.random_dog {
+  @include mixins.pageStyle();
+  gap: 10px;
+}
+
+.title {
+  font-size: 2em;
+  color: colors.$text-primary;
+}
+
+.refresh_button {
+  @include mixins.buttonStylePrimary();
+  padding: 8px 10px;
+}
+
+.dog_image_container {
+  max-width: 500px;
+  overflow: hidden;
+  border-radius: 4px;
+
+  .image_box {
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+}
