@@ -1,0 +1,26 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.search_box {
+  @include mixins.displayFlex();
+  padding: 5px 10px;
+  background: colors.$input-background-primary;
+  border: 1px solid colors.$input-border-primary;
+  border-radius: 4px;
+
+  &:has(> input:focus) {
+    border-color: colors.$input-border-primary-selected;
+  }
+
+  input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-size: 1em;
+  }
+
+  img {
+    width: 20px;
+  }
+}

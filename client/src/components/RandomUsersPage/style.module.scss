@@ -1,0 +1,130 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+@mixin tableDisplayGrid() {
+  display: grid;
+  grid-template-columns: 1fr 300px 100px;
+  grid-template-rows: repeat(auto-fill, 80px);
+  align-items: center;
+
+  @include media("tablet") {
+    grid-template-columns: 280px 260px minmax(80px, 1fr);
+  }
+}
+
+.random_users {
+  @include mixins.pageStyle();
+  gap: 20px;
+}
+
+.search_input {
+  width: 250px;
+
+  @include media("phone") {
+    width: 100%;
+  }
+}
+
+.table {
+  max-width: 1000px;
+  width: 100%;
+  min-height: 100%;
+  padding-right: 10px;
+  padding-left: 20px;
+  box-shadow: 2px 2px 5px 1px colors.$light-shadow;
+
+  @include media("tablet") {
+    overflow-x: scroll;
+  }
+}
+
+.table_heading {
+  @include tableDisplayGrid();
+
+  .column {
+    font-size: 1.2em;
+    font-weight: 500;
+
+    @include media("tablet") {
+      font-size: .875em;
+      font-weight: 600;
+    }
+  }
+
+  .column:last-child {
+    justify-self: center;
+  }
+}
+
+.list {
+  .row {
+    @include tableDisplayGrid();
+    color: colors.$text-secondary;
+    font-size: 1em;
+
+    @include media("tablet") {
+      font-size: .875em;
+    }
+    
+    .column {
+      height: 100%;
+      width: 100%;
+      padding-bottom: 10px;
+      border-bottom: 1px solid colors.$input-border-primary;
+      @include mixins.displayFlex(flex-start);
+    }
+
+    &:last-child .column {
+      border: none;
+    }
+    
+    .profile {
+      display: flex;
+      gap: 10px;
+
+      .image_box {
+        width: 50px;
+        height: 50px;
+        @include mixins.displayFlex();
+        overflow: hidden;
+        border-radius: 100%;
+
+        @include media("tablet") {
+          width: 40px;
+          height: 40px;
+        }
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .info {
+        @include mixins.displayFlex(flex-start, flex-start);
+        flex-direction: column;
+
+        .username {
+          font-size: 1.2em;
+          font-weight: 500;
+          color: colors.$text-primary-hovered;
+
+          @include media("tablet") {
+            font-size: 1em;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    .name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; 
+    }
+
+    .age {
+      justify-content: center;
+    }
+  }
+}

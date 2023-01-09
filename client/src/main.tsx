@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import App from './App'
-import { RandomUsersPage, LoginPage, HttpCatPage, RandomDogPage } from './components'
+import { RandomUsersPage, LoginPage, HttpCatPage, RandomDogPage, ClientsRegistrationPage } from './components'
 import { AuthProvider } from './contexts/AuthContext'
 import './styles/global.scss'
 
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
         path: '/random-dog',
         element: <RandomDogPage />
       },
+      {
+        path: '/clients-registration',
+        element: <ClientsRegistrationPage />
+      }
     ]
   },
   {

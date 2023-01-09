@@ -18,6 +18,7 @@
   @include displayFlex();
   min-height: 100%;
   flex-direction: column;
+  margin-top: 20px;
 }
 
 @mixin buttonStylePrimary() {

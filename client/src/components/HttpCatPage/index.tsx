@@ -1,17 +1,19 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 import { catHoldingSearchSignImg, copyIcon, notFoundImg, searchIcon } from '../../assets'
 import { httpCatApiUrl, availableHttpCodes } from '../../data/httpCat'
 import { useDebounce } from '../../hooks/useDebounce'
 import { ReferenceLink } from '../ReferenceLink'
+import { SearchInput } from '../SearchInput'
 
 import styles from './style.module.scss'
+
+const initialReferenceLink = 'https://http.cat/[status_code]'
 
 export const HttpCatPage = () => {
   const [ requestUrl, setRequestUrl ] = useState(catHoldingSearchSignImg)
   const [ httpCodeUnavailableError, setHttpCodeUnavailableError ] = useState(false)
-  const [ referenceLink, setReferenceLink ] = useState('https://http.cat/[status_code]')
+  const [ referenceLink, setReferenceLink ] = useState(initialReferenceLink)
   const [ httpCode, setHttpCode ] = useState('')
   const debouncedHttpCode = useDebounce(httpCode, 300)
 
@@ -21,13 +23,18 @@ export const HttpCatPage = () => {
 
   const handleChangingHttpCode = () => {
     setHttpCodeUnavailableError(false)
-    if(httpCode.length === 0) return setRequestUrl(catHoldingSearchSignImg)
+
+    // when the input is empty
+    if(httpCode.length === 0) {
+      setReferenceLink(initialReferenceLink)
+      return setRequestUrl(catHoldingSearchSignImg)
+    }
 
     const newRequestUrl = `${httpCatApiUrl}/${httpCode}`
     const isHttpCodeAvailable = availableHttpCodes.filter(value => value === parseInt(httpCode)).length > 0
 
     if(!isHttpCodeAvailable) {
-      setReferenceLink('https://http.cat/[status_code]')
+      setReferenceLink(initialReferenceLink)
       return setHttpCodeUnavailableError(true)
     }
     
@@ -49,10 +56,13 @@ export const HttpCatPage = () => {
     <div className={styles.cat_api}>
       <div className={styles.field}>
         <label htmlFor="httpCode">Insira seu código HTTP:</label>
-        <div className={styles.input_box}>
-          <input type="text" id='httpCode' onChange={handleInputChange} maxLength={3}/>
-          <img src={searchIcon} alt="search" />
-        </div>
+        <SearchInput
+         id='httpCode' 
+         onChange={handleInputChange} 
+         maxLength={3} 
+         placeholder="Ex: 200" 
+         className={styles.search_input}
+        />
         { httpCodeUnavailableError && <span className={styles.error_message}>Desculpe, mas esse código não está disponível.</span> } 
       </div>
 
