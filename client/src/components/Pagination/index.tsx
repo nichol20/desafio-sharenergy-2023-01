@@ -14,9 +14,13 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
 
   return (
     <ul className={styles.pagination}>
-      <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage - 1}`)}>
-        <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
-      </li>
+      {
+        currentPage - 1 >= 1 && (
+          <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage - 1}`)}>
+            <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
+          </li>
+        )
+      }
       {
         Array(lastPage + 1).fill('').map((_, index) => {
           // index ranges from 1 to the last page number
@@ -42,7 +46,7 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
           const isAtLeast4AwayToLastPage = index === currentPage + 3 && index !== lastPage
           
           if(isCloseToLastPage || isAtLeast4AwayToLastPage)
-            return <li className={styles.page_item} key={'...'+index} >...</li>
+            return <li className={styles.page_item} key={index} >...</li>
 
           if(((isCurrentPageOrClose && !isLastPageOrClose) || isFirstPage) || (isLastPageOrClose || isLastPage)) {
             return (
@@ -57,9 +61,13 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
           }
         })
       }
-      <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage + 1}`)}>
-        <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
-      </li>
+      {
+        currentPage + 1 < lastPage && (
+          <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage + 1}`)}>
+            <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
+          </li>
+        )
+      }
     </ul>
   )
 }

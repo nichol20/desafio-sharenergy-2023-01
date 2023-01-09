@@ -8,9 +8,10 @@ interface SearchInputProps {
   className?: string | undefined
   placeholder?: string | undefined
   maxLength?: number | undefined
+  defaultValue?: string | number | readonly string[] | undefined
 }
 
-export const SearchInput = ({onChange, id, className, placeholder, maxLength}: SearchInputProps) => {
+export const SearchInput = ({onChange, id, className, placeholder, maxLength, defaultValue}: SearchInputProps) => {
  return (
   <div className={styles.search_box}>
     <input
@@ -20,6 +21,7 @@ export const SearchInput = ({onChange, id, className, placeholder, maxLength}: S
      id={id}
      className={className}
      maxLength={maxLength}
+     defaultValue={defaultValue}
     />
     <img src={searchIcon} alt="search" />
   </div>

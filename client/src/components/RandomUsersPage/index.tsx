@@ -2,23 +2,25 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import axios, { AxiosResponse } from 'axios'
 
-import { SearchInput, Pagination } from '../'
+import { SearchInput, Pagination, HighlightableText } from '../'
 import { useDebounce } from '../../hooks/useDebounce'
 import { Person, RandomUserApiResponse } from '../../types/randomUser'
 import { randomUserApiUrl } from '../../data/randomUser'
 
 import styles from './style.module.scss'
+import { lowerCase } from '../../utils/functions'
 
 const numberOfPeoplePerPage = 10
 
 export const RandomUsersPage = () => {
-  const [ searchValue, setSearchValue ] = useState('')
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const [ searchValue, setSearchValue ] = useState(searchParams.get('search') || '')
   const debouncedSearchValue = useDebounce(searchValue, 300)
   const [ users, setUsers ] = useState<Person[]>([])
-  const [ searchParams, setSearchParams ] = useSearchParams();
+  const [ filteredUsers, setFilteredUsers ] = useState<Person[]>([])
   const pageParam = parseInt(searchParams.get('page') || '1')
   const currentPage = isNaN(pageParam) ? 1 : pageParam
-  const lastPage = users.length / numberOfPeoplePerPage
+  const lastPage = Math.ceil(filteredUsers.length / numberOfPeoplePerPage)
   const initialApiUrl = `${randomUserApiUrl}?results=500`
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,19 +31,37 @@ export const RandomUsersPage = () => {
     try {
       const response: AxiosResponse<RandomUserApiResponse> = await axios.get(initialApiUrl)
       setUsers(response.data.results)
+      setFilteredUsers(response.data.results)
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const filterUser = () => {
+    const filtered = users.filter((person) => {
+      const name = `${person.name.first} ${person.name.last}`
+      return lowerCase(person.email).includes(lowerCase(searchValue))
+       || lowerCase(person.login.username).includes(lowerCase(searchValue))
+       || lowerCase(name).includes(lowerCase(searchValue))
+    })
+    const searchParam = searchValue.length > 0 ? `search=${searchValue}` : ''
+    setSearchParams(`?page=1&${searchParam}`)
+    setFilteredUsers(filtered)
+    console.log(filtered)
   }
 
   useEffect(() => {
     fetchUsers()
   }, [])
 
+  useEffect(() => {
+    if(users.length > 0) filterUser()
+  }, [ users ])
+
 
   // triggers the function after a while that the user stops typing
   useEffect(() => {
-    
+    filterUser()
   }, [debouncedSearchValue])
 
   return (
@@ -50,6 +70,7 @@ export const RandomUsersPage = () => {
        onChange={handleInputChange} 
        placeholder='encontre alguém...' 
        className={styles.search_input} 
+       defaultValue={searchValue}
       />
       <div className={styles.table}>
         <div className={styles.table_heading}>
@@ -59,7 +80,7 @@ export const RandomUsersPage = () => {
         </div>
         <div className={styles.list}>
           {
-            users.map((user, index) => {
+            filteredUsers.map((user, index) => {
               const initialPosition = (currentPage - 1) * numberOfPeoplePerPage
               const finalPosition = (currentPage * numberOfPeoplePerPage) - 1
               const isInRange = index >= initialPosition && index <= finalPosition
@@ -74,11 +95,17 @@ export const RandomUsersPage = () => {
                       <img src={user.picture.medium} alt={user.name.first} />
                     </div>
                     <div className={styles.info}>
-                      <span className={styles.username}>{user.login.username}</span>
-                      <span className={styles.email}>{user.email}</span>
+                      <span className={styles.username}>
+                        <HighlightableText text={user.login.username} snippet={searchValue} />
+                      </span>
+                      <span className={styles.email}>
+                        <HighlightableText text={user.email} snippet={searchValue} />
+                      </span>
                     </div>
                   </div>
-                  <div className={`${styles.column} ${styles.name}`}>{`${user.name.first} ${user.name.last}`}</div>
+                  <div className={`${styles.column} ${styles.name}`}>
+                    <HighlightableText text={`${user.name.first} ${user.name.last}`} snippet={searchValue} />
+                  </div>
                   <div className={`${styles.column} ${styles.age}`}>{user.dob.age}</div>
                 </div>
               )
