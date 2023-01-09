@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import axios, { AxiosResponse } from 'axios'
 
+import { SearchInput, Pagination } from '../'
 import { useDebounce } from '../../hooks/useDebounce'
-import { SearchInput } from '../SearchInput'
 import { Person, RandomUserApiResponse } from '../../types/randomUser'
 import { randomUserApiUrl } from '../../data/randomUser'
 
 import styles from './style.module.scss'
-import { Pagination } from '../Pagination'
 
 const numberOfPeoplePerPage = 10
 

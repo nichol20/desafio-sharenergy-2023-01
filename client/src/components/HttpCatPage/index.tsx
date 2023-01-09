@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { catHoldingSearchSignImg, copyIcon, notFoundImg, searchIcon } from '../../assets'
 import { httpCatApiUrl, availableHttpCodes } from '../../data/httpCat'
 import { useDebounce } from '../../hooks/useDebounce'
-import { ReferenceLink } from '../ReferenceLink'
-import { SearchInput } from '../SearchInput'
+import { SearchInput, ReferenceLink } from '../'
 
+import { catHoldingSearchSignImg, notFoundImg } from '../../assets'
 import styles from './style.module.scss'
 
 const initialReferenceLink = 'https://http.cat/[status_code]'

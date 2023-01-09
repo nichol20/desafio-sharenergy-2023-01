@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+
 import { chevronForwardIcon } from '../../assets'
 import styles from './style.module.scss'
 

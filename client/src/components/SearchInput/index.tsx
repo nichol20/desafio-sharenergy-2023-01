@@ -1,3 +1,4 @@
+
 import { searchIcon } from '../../assets'
 import styles from './style.module.scss'
 

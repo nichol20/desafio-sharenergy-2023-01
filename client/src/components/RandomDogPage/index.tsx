@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 
 import { allowedMimeTypes, randomDogApiUrl } from '../../data/randomDog'
 import { RandomDogApiResponse } from '../../types/randomDog'
+import { ReferenceLink } from '../'
 
-import styles from './style.module.scss'
 import { loadingDogGif } from '../../assets'
-import { ReferenceLink } from '../ReferenceLink'
+import styles from './style.module.scss'
 
 export const RandomDogPage = () => {
   const [ imageUrl, setImageUrl ] = useState(loadingDogGif)

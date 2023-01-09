@@ -1,6 +1,5 @@
-import React from 'react'
-import { copyIcon } from '../../assets'
 
+import { copyIcon } from '../../assets'
 import styles from './style.module.scss'
 
 interface ReferenceLinkProps {
