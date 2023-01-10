@@ -14,7 +14,9 @@ export const ReferenceLink = ({ link }: ReferenceLinkProps) => {
 
   return (
     <div className={styles.reference_link_box}>
-      <span className={styles.reference_link}>{link}</span>
+      <div className={styles.text_box}>
+        <span className={styles.reference_link}>{link}</span>
+      </div>
       <button className={styles.copy_button} onClick={copyLinkToClipboard}>
         <img src={copyIcon} alt="copy"/>
       </button>

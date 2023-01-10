@@ -1,0 +1,31 @@
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+
+  server:
+    build: ./server
+    entrypoint: sh -c "npm install && npm run dev"
+    ports:
+      - 5000:5000
+    volumes:
+      - ./server:/home/node/app
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    entrypoint: sh -c "npm install && npm run dev"
+    ports:
+      - 5173:5173
+    volumes:
+      - ./client:/home/node/app
+    depends_on:
+      - server
+
+volumes:
+  mongodb_data:

@@ -7,25 +7,43 @@
   border: 1px solid colors.$input-border-primary-selected;
   border-radius: 6px;
   background-color: colors.$input-background-primary;
+  max-width: 400px;
+  width: 100%;
 
-  .reference_link {
-    color: colors.$text-primary;
-    font-size: .875em;
-    padding: 2px 4px;
-    font-weight: 500;
+  .text_box {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 95%;
+    
+    .reference_link {
+      color: colors.$text-primary;
+      font-size: .875em;
+      padding: 2px 4px;
+      font-weight: 500;
+  
+      @include media("phone") {
+        font-size: .7em;
+      }
+    }
   }
 
   .copy_button {
     width: 26px;
-    height: 26px;
+    height: 100%;
     padding: 4px;
     border: none;
     background-color: colors.$background-button-primary;
     border-radius: 4px;
     cursor: pointer;
+    @include mixins.displayFlex();
 
     &:hover {
       background-color: colors.$background-button-primary-hovered;
+    }
+
+    @include media("phone") {
+      width: 24px;
     }
 
     img {
