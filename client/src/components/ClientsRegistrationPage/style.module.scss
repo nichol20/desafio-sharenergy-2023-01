@@ -1,0 +1,188 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.clients_registration {
+  @include mixins.pageStyle();
+  position: relative;
+}
+
+.list_container {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 260px);
+  grid-template-rows: repeat(auto-fill, 100px);
+  gap: 50px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 40px;
+}
+
+.client_card {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: .3s ease-out;
+  justify-self: center;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  background: #fff;
+  box-shadow: colors.$light-shadow;
+  @include mixins.displayFlex(flex-start, flex-start);
+  gap: 10px;
+
+  &:hover {
+    width: 110%;
+    height: 110%;
+  }
+
+  .img_box {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profile {
+    width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+
+    .name {
+      color: colors.$text-primary-hovered;
+      font-size: 1em;
+    }
+
+    .email {
+      font-size: .875em;
+      color: colors.$text-secondary;
+    }
+  }
+}
+
+.add_button {
+  @include mixins.displayFlex();
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  width: 65px;
+  height: 65px;
+  padding: 10px;
+  border-radius: 100%;
+  background: colors.$background-button-primary;
+  cursor: pointer;
+  transition: .3s;
+  border: none;
+  
+  &:hover {
+    background: colors.$background-button-primary-hovered;
+  }
+
+  img {
+    @include mixins.whiteFilter();
+  }
+}
+
+.edit_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  @include mixins.displayFlex();
+  background: colors.$medium-shadow;
+  opacity: 0;
+  transition: .3s ease-out;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .form {
+    position: relative;
+    background: #fff;
+    width: 400px;
+    @include mixins.displayFlex();
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 8px;
+    padding: 20px;
+    
+    .close_button {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      border: none;
+      background-color: colors.$background-close-button;
+      padding: 4px;
+      cursor: pointer;
+
+      img {
+        @include mixins.whiteFilter();
+      }
+    }
+
+    .img_box {
+      width: 100px;
+      height: 100px;
+    }
+
+    .field {
+      width: 100%;
+
+      .title {
+        text-align: center;
+        font-size: 1em;
+        margin-bottom: 4px;
+      }
+
+      input {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 1em;
+        outline: none;
+        border: 1px solid colors.$input-border-primary;
+        border-radius: 4px;
+
+        &:focus {
+          border-color: colors.$input-border-primary-selected;
+        }
+      }
+    }
+
+    .options {
+      @include mixins.displayFlex(space-around);
+      width: 100%;
+
+      .button {
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        border: none;
+        padding: 6px;
+        cursor: pointer;
+
+        img {
+          @include mixins.whiteFilter();
+          width: 100%;
+        }
+      }
+
+      .button.edit {
+        background-color: colors.$background-button-primary;
+      }
+
+      .button.delete {
+        background-color: colors.$background-close-button;
+      }
+    }
+  }
+}

@@ -45,9 +45,6 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
           // (if currentPage = 46 returns true for index 49)
           const isAtLeast4AwayToLastPage = index === currentPage + 3 && index !== lastPage
           
-          if(isCloseToLastPage || isAtLeast4AwayToLastPage)
-            return <li className={styles.page_item} key={index} >...</li>
-
           if(((isCurrentPageOrClose && !isLastPageOrClose) || isFirstPage) || (isLastPageOrClose || isLastPage)) {
             return (
               <li
@@ -59,6 +56,10 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
               </li>
             )
           }
+          
+          if(isCloseToLastPage || isAtLeast4AwayToLastPage)
+            return <li className={styles.page_item} key={index} >...</li>
+
         })
       }
       {

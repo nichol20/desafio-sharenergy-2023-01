@@ -1,3 +1,5 @@
+@use '../../styles/colors';
+
 .highlighted_text {
-  color: rgb(255, 80, 80);
+  color: colors.$text-highlighted;
 }
