@@ -14,9 +14,9 @@ userRoutes.post('/users', async (req, res) => {
 
   if(usernameExist) return res.status(409).json({ message: 'User already exists' })
 
-  const token = await userController.create({ username, password })
+  const response = await userController.create({ username, password })
 
-  return res.status(201).json({ token })
+  return res.status(201).json(response)
 })
 
 userRoutes.get('/users', mustBeAuthenticated, async (req, res) => {
@@ -53,5 +53,5 @@ userRoutes.post('/login', async (req, res) => {
 
   if(!response) return res.status(401).json({ message: 'Wrong crendentials' })
 
-  return res.status(201).json({ ...response })
+  return res.status(201).json(response)
 })

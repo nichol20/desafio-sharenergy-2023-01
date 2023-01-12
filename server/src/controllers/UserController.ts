@@ -7,7 +7,8 @@ import { ObjectId } from "mongodb";
 
 interface LoginResponse {
   accessToken: string,
-  refreshToken: string
+  refreshToken: string,
+  user: Omit<UserDocument, "password">
 }
 
 interface CreateResponse extends LoginResponse {}
@@ -25,17 +26,21 @@ export class UserController {
     
     await authController.storeRefreshToken(refreshToken)
 
+    const { password: p, ...userRest } = user
+
     return {
       accessToken: authController.generateAccessToken({}, { subject: String(user._id) }),
-      refreshToken
+      refreshToken,
+      user: userRest
     }
   }
 
   async create(user: Omit<UserDocument, "clientList">): Promise<CreateResponse> {
-    const { insertedId } = await this._usersCollection.insertOne({
+    const newUser = {
       ...user,
       clientList: []
-    })
+    }
+    const { insertedId } = await this._usersCollection.insertOne(newUser)
 
     const authController = new AuthController
     const refreshToken = authController.generateRefreshToken({}, { subject: String(insertedId) })
@@ -44,7 +49,8 @@ export class UserController {
 
     return {
       accessToken: authController.generateAccessToken({}, { subject: String(insertedId) }),
-      refreshToken
+      refreshToken,
+      user: newUser
     }
   }
 
