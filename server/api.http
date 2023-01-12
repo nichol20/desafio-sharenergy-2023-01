@@ -1,0 +1,70 @@
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test123"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test123"
+}
+
+###
+GET http://localhost:5000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTI3OTgsImV4cCI6MTY3MzQ5NjM5OCwic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.rUIF1wCNtGjec9Y3e2TJLuO-zsrjjQZkEYOoieRZKIc
+
+###
+GET http://localhost:5000/users/63bf78f74c74350913597181
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTI3OTgsImV4cCI6MTY3MzQ5NjM5OCwic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.rUIF1wCNtGjec9Y3e2TJLuO-zsrjjQZkEYOoieRZKIc
+
+###
+POST http://localhost:5000/clients
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3MzUwMDgzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.j0hZ-hfKugceRHSotC395ZjO6c4zfNrMt9K0NZ0N1kg
+Content-Type: application/json
+
+{
+  "name": "string2",
+  "email": "string2",
+  "phone": "string2",
+  "address": "string2",
+  "cpf": "string2"
+}
+
+###
+GET http://localhost:5000/clients
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3MzUwMDgzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.j0hZ-hfKugceRHSotC395ZjO6c4zfNrMt9K0NZ0N1kg
+
+###
+GET http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3MzUwMDgzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.j0hZ-hfKugceRHSotC395ZjO6c4zfNrMt9K0NZ0N1kg
+
+###
+PATCH http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM1MzMwMjMsImV4cCI6MTY3MzUzNjYyMywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.-0pnuQTvzkzP5B2-xRfmm-rP7coJs4W6Tv__DZswrrc
+Content-Type: application/json
+
+{
+  "name":       "stringUpdated",
+  "email":      "stringUpdated",
+  "phone":      "stringUpdated",
+  "address":    "stringUpdated",
+  "cpf":        "stringUpdated"
+}
+
+###
+DELETE http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM1MzMwMjMsImV4cCI6MTY3MzUzNjYyMywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.-0pnuQTvzkzP5B2-xRfmm-rP7coJs4W6Tv__DZswrrc
+
+###
+POST http://localhost:5000/refresh-token
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3NDc5MzIzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.8S4u1SOcSabXKJ5iCM7265EKbncamzoApVQqaioMVXo"
+}

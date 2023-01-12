@@ -1,7 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+
+import db from './config/db'
 import { clientRoutes } from './routes/client'
+import { userRoutes } from './routes/user'
+import { authRoutes } from './routes/auth'
 
 dotenv.config()
 
@@ -14,6 +18,8 @@ app.use(cors({
 }))
 
 app.use(clientRoutes)
+app.use(userRoutes)
+app.use(authRoutes)
 
 // Global error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -21,4 +27,15 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send('Something broke!')
 })
 
-app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`))
+async function main() {
+  try {
+    await db.connectToServer()
+    app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`))
+  } catch (error) {
+    console.log(error)
+    db.close()
+    process.exit()
+  }
+}
+
+main()

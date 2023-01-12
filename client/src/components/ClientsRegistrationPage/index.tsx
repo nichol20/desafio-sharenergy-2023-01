@@ -44,7 +44,7 @@ export const ClientsRegistrationPage = () => {
             <img src={personIcon} alt="person" />
           </div>
           <div className={styles.field}>
-            <h5 className={styles.title}>Name</h5>
+            <h5 className={styles.title}>Nome</h5>
             <input type="text" name='name' defaultValue="João" />
           </div>
           <div className={styles.field}>
