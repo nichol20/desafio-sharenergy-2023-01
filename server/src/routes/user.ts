@@ -19,6 +19,22 @@ userRoutes.post('/users', async (req, res) => {
   return res.status(201).json(response)
 })
 
+
+userRoutes.get('/users/profile', mustBeAuthenticated, async (req, res) => {
+  const userController = new UserController
+
+  try {
+    const user = await userController.findOne(req.authorId!)
+    
+    if(!user) return res.status(404).json({ message: 'User not found' })
+
+    return res.status(200).json(user)
+  } catch (error) {
+    return res.status(404).json({ message: 'User not found' })
+  }
+})
+
+
 userRoutes.get('/users', mustBeAuthenticated, async (req, res) => {
   const userController = new UserController
   const limitQuery = parseInt(String(req.query.limit))
@@ -27,6 +43,7 @@ userRoutes.get('/users', mustBeAuthenticated, async (req, res) => {
   const users = await userController.find(limit)
   return res.status(200).json(users)
 })
+
 
 userRoutes.get('/users/:userId', mustBeAuthenticated, async (req, res) => {
   const { userId } = req.params
@@ -42,6 +59,7 @@ userRoutes.get('/users/:userId', mustBeAuthenticated, async (req, res) => {
     return res.status(404).json({ message: 'User not found' })
   }
 })
+
 
 userRoutes.post('/login', async (req, res) => {
   const { username, password } = req.body
