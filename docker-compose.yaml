@@ -21,6 +21,7 @@ services:
       DB_NAME: desafiosharenergy
       JWT_SECRET: JWT_SECRET@desafiosharenergy
       REFRESH_TOKEN_SECRET: REFRESH_TOKEN_SECRET@desafiosharenergy
+      FRONTEND_URL: http://localhost:5173
 
   client:
     build: ./client
