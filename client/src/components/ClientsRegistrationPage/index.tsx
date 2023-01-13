@@ -1,78 +1,155 @@
-import { useRef } from 'react'
-import { addIcon, closeIcon, pencilIcon, personIcon, trashIcon } from '../../assets'
+import { useContext, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { addIcon, personIcon } from '../../assets'
+import { AuthContext } from '../../contexts/AuthContext'
+import { useDebounce } from '../../hooks/useDebounce'
+import { Client } from '../../types/user'
+import { AccessTokenCookieController } from '../../utils/cookies'
+import { lowerCase } from '../../utils/functions'
+import { http } from '../../utils/http'
+import { HighlightableText } from '../HighlightableText'
+import { Pagination } from '../Pagination'
+import { SearchInput } from '../SearchInput'
+import { ClientModal } from './ClientModal'
 import styles from './style.module.scss'
 
-export const ClientsRegistrationPage = () => {
-  const editModalRef = useRef<HTMLDivElement>(null)
+type CurrentClient = Client | Omit<Client, "id" | "created_at">
 
-  const closeModal = () => {
-    if(editModalRef.current === null) return
-    editModalRef.current.classList.remove(styles.active)
-  }
+const numberOfPeoplePerPage = 12
+
+export const ClientsRegistrationPage = () => {
+  const { user } = useContext(AuthContext)
+
+  const [ clients, setClients ] = useState<Client[]>(user!.clientList)
+  const [ filteredClients, setFilteredClients ] = useState<Client[]>(user!.clientList)
+
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const [ searchValue, setSearchValue ] = useState(searchParams.get('search') || '')
+  const debouncedSearchValue = useDebounce(searchValue, 300)
+
+  const pageParam = parseInt(searchParams.get('page') || '1')
+  const currentPage = isNaN(pageParam) ? 1 : pageParam
+  const lastPage = Math.ceil(filteredClients.length / numberOfPeoplePerPage)
+
+  const [ showModal, setShowModal ] = useState(false)
+  const [ clientModalType, setClientModalType ] = useState<'create' | 'edit'>('create')
+  const [ currentClient, setCurrentClient ] = useState<CurrentClient>({
+    name: '',
+    email: '',
+    address: '',
+    cpf: '',
+    phone: ''
+  })
 
   const openModal = () => {
-    if(editModalRef.current === null) return
-    editModalRef.current.classList.add(styles.active)
+    setShowModal(true)
+    requestAnimationFrame(() => {
+      const clientModalEl = document.querySelector(`.${styles.client_modal}`)
+      clientModalEl?.classList.add(styles.active)
+    })
   }
 
-  const addClient = () => {
-
+  const handleClientCardClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+    setClientModalType('edit')
+    setCurrentClient(clients[index])
+    openModal()
   }
+
+  const refreshClients = async () => {
+    try {
+      const { data } = await http.get('/clients', {
+        headers: {
+          Authorization: `Bearer ${AccessTokenCookieController.get()}`
+        }
+      })
+      console.log(data)
+      setClients(data)
+    } catch (error) {
+      
+    }
+  }
+
+  const handleAddButtonClick = () => {
+    setClientModalType('create')
+    setCurrentClient({
+      name: '',
+      email: '',
+      address: '',
+      cpf: '',
+      phone: ''
+    })
+    openModal()
+  }
+
+  const handleSearchInputuChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
+  }
+
+  const filterClients = () => {
+    const filtered = clients.filter((client) => {
+      const name = client.name || 'Sem nome'
+      const email = client.email || 'Sem email'
+      return lowerCase(email).includes(lowerCase(searchValue))
+       || lowerCase(name).includes(lowerCase(searchValue))
+    })
+    const searchParam = searchValue.length > 0 ? `search=${searchValue}` : ''
+    setSearchParams(`?page=1&${searchParam}`)
+    setFilteredClients(filtered)
+  }
+
+  // triggers the function after a while that the user stops typing
+  useEffect(() => {
+    filterClients()
+  }, [debouncedSearchValue])
 
   return (
-    <div className={styles.client_registration}>
+    <div className={styles.clients_registration}>
+      <SearchInput
+       onChange={handleSearchInputuChange} 
+       placeholder='encontre alguém...' 
+       className={styles.search_input} 
+       defaultValue={searchValue}
+      />
       <div className={styles.list_container}>
-        <div className={styles.client_card} onClick={openModal}>
-          <div className={styles.img_box}>
-            <img src={personIcon} alt="person" />
-          </div>
-          <div className={styles.profile}>
-            <h4 className={styles.name}>João</h4>
-            <span className={styles.email}>Joaodsadasdsadasdasdasdasdasdsadsa@gmail.com</span>
-          </div>
-        </div>
+        {
+          filteredClients.map((client, index) => {
+            const initialPosition = (currentPage - 1) * numberOfPeoplePerPage
+            const finalPosition = (currentPage * numberOfPeoplePerPage) - 1
+            const isInRange = index >= initialPosition && index <= finalPosition
+            
+            if(!isInRange) return
+
+            return (
+              <div className={styles.client_card} onClick={event => handleClientCardClick(event, index)} key={index}>
+                <div className={styles.img_box}>
+                  <img src={personIcon} alt="person" />
+                </div>
+                <div className={styles.profile}>
+                  <h4 className={styles.name}>
+                    <HighlightableText text={client.name || 'Sem nome'} snippet={searchValue} />
+                  </h4>
+                  <span className={styles.email}>
+                    <HighlightableText text={client.email || 'Sem email'} snippet={searchValue} />
+                  </span>
+                </div>
+              </div>
+            )
+          })
+        }
       </div>
-      <button className={styles.add_button}>
+      <Pagination baseUrl='/clients-registration' currentPage={currentPage} lastPage={lastPage} />
+      <button className={styles.add_button} onClick={handleAddButtonClick}>
         <img src={addIcon} alt='add' />
       </button>
-      <div className={styles.edit_modal} ref={editModalRef} >
-        <form className={styles.form}>
-          <button className={styles.close_button} onClick={closeModal} type="button">
-            <img src={closeIcon} alt="close" />
-          </button>
-          <div className={styles.img_box}>
-            <img src={personIcon} alt="person" />
-          </div>
-          <div className={styles.field}>
-            <h5 className={styles.title}>Nome</h5>
-            <input type="text" name='name' defaultValue="João" />
-          </div>
-          <div className={styles.field}>
-            <h5 className={styles.title}>Email</h5>
-            <input type="text" name='email' defaultValue="Joao@gmail.com" />
-          </div>
-          <div className={styles.field}>
-            <h5 className={styles.title}>Telefone</h5>
-            <input type="text" name='telefone' defaultValue="(88) 99923-4231" />
-          </div>
-          <div className={styles.field}>
-            <h5 className={styles.title}>Endereço</h5>
-            <input type="text" name='endereço' defaultValue="Rua dos feijoes, bairro limoeiro" />
-          </div>
-          <div className={styles.field}>
-            <h5 className={styles.title}>Cpf</h5>
-            <input type="text" name='cpf' defaultValue="123.456.789-90" />
-          </div>
-          <div className={styles.options}>
-            <button className={`${styles.edit} ${styles.button}`} type="submit">
-              <img src={pencilIcon} alt="pencil" />
-            </button>
-            <button className={`${styles.delete} ${styles.button}`} type="button">
-              <img src={trashIcon} alt="trashs" />
-            </button>
-          </div>
-        </form>
-      </div>
+      { 
+        showModal && 
+        <ClientModal
+         setShowModal={setShowModal} 
+         type={clientModalType} 
+         client={currentClient} 
+         refreshClients={refreshClients}
+        /> 
+      }
     </div>
   )
 }

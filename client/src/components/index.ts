@@ -3,6 +3,7 @@ export { RandomUsersPage } from './RandomUsersPage'
 export { HttpCatPage } from './HttpCatPage'
 export { RandomDogPage } from './RandomDogPage'
 export { ClientsRegistrationPage } from './ClientsRegistrationPage'
+export { RegisterPage } from './RegisterPage'
 
 export { Header } from './Header'
 export { Pagination } from './Pagination'

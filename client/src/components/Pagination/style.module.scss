@@ -12,7 +12,7 @@
     border: 1px solid colors.$input-border-primary;
     cursor: pointer;
     user-select: none;
-    color: colors.$text-primary-hovered;
+    color: colors.$text-primary-highlighted;
     min-width: 30px;
     @include mixins.displayFlex();
     height: 100%;
@@ -40,8 +40,8 @@
     }
 
     &:hover, &.active {
-      background-color: colors.$background-button-primary;
-      color: colors.$text-button-primary;
+      background-color: colors.$button-bg-primary;
+      color: colors.$button-text-primary;
 
       .icon {
         @include mixins.whiteFilter();

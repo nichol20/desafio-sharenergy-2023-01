@@ -11,11 +11,16 @@ interface PaginationProps {
 
 export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) => {
   const navigate = useNavigate()
+  const isTherePreviousPage = currentPage - 1 >= 1
+  const isThereNextPage = currentPage < lastPage
+  const isThereOnlyOnePage = lastPage <= 1
+
+  if(isThereOnlyOnePage) return null
 
   return (
     <ul className={styles.pagination}>
       {
-        currentPage - 1 >= 1 && (
+        isTherePreviousPage && (
           <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage - 1}`)}>
             <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
           </li>
@@ -63,7 +68,7 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
         })
       }
       {
-        currentPage + 1 < lastPage && (
+        isThereNextPage && (
           <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage + 1}`)}>
             <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
           </li>

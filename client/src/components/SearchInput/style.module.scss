@@ -5,7 +5,7 @@
 .search_box {
   @include mixins.displayFlex();
   padding: 5px 10px;
-  background: colors.$input-background-primary;
+  background: colors.$input-bg-primary;
   border: 1px solid colors.$input-border-primary;
   border-radius: 4px;
 

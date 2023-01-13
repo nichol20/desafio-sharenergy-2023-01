@@ -9,11 +9,13 @@
 
 .list_container {
   margin-top: 40px;
+  margin-bottom: 50px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 260px);
   grid-template-rows: repeat(auto-fill, 100px);
   gap: 50px;
   width: 100%;
+  max-width: 1280px;
   align-items: center;
   justify-content: center;
   padding: 10px 40px;
@@ -52,7 +54,7 @@
     text-overflow: ellipsis; 
 
     .name {
-      color: colors.$text-primary-hovered;
+      color: colors.$text-primary-highlighted;
       font-size: 1em;
     }
 
@@ -72,13 +74,13 @@
   height: 65px;
   padding: 10px;
   border-radius: 100%;
-  background: colors.$background-button-primary;
+  background: colors.$button-bg-primary;
   cursor: pointer;
   transition: .3s;
   border: none;
   
   &:hover {
-    background: colors.$background-button-primary-hovered;
+    background: colors.$button-bg-primary-hovered;
   }
 
   img {
@@ -86,103 +88,119 @@
   }
 }
 
-.edit_modal {
+.client_modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
   min-height: 100vh;
-  @include mixins.displayFlex();
-  background: colors.$medium-shadow;
-  opacity: 0;
+  width: 100%;
   transition: .3s ease-out;
-  pointer-events: none;
+  opacity: 0;
+  background: colors.$medium-shadow;
+  z-index: 1002;
 
   &.active {
     opacity: 1;
     pointer-events: all;
   }
+}
 
-  .form {
-    position: relative;
-    background: #fff;
-    width: 400px;
+.responsive_box_relative {
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  min-height: 100vh;
+
+  .responsive_box_absolute {
+    position: absolute;
+    top: 16px;
+    left: 0;
+    width: 100%;
     @include mixins.displayFlex();
-    flex-direction: column;
-    gap: 15px;
-    border-radius: 8px;
-    padding: 20px;
     
-    .close_button {
-      position: absolute;
-      right: 7px;
-      top: 7px;
+  }
+}
+
+
+.form {
+  position: relative;
+  background: #fff;
+  width: 400px;
+  @include mixins.displayFlex();
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 8px;
+  padding: 20px;
+  
+  .close_button {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: none;
+    background-color: colors.$button-bg-close;
+    padding: 4px;
+    cursor: pointer;
+
+    img {
+      @include mixins.whiteFilter();
+    }
+  }
+
+  .img_box {
+    width: 100px;
+    height: 100px;
+  }
+
+  .field {
+    width: 100%;
+
+    .title {
+      text-align: center;
+      font-size: 1em;
+      margin-bottom: 4px;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px 10px;
+      font-size: 1em;
+      outline: none;
+      border: 1px solid colors.$input-border-primary;
+      border-radius: 4px;
+
+      &:focus {
+        border-color: colors.$input-border-primary-selected;
+      }
+    }
+  }
+
+  .options {
+    @include mixins.displayFlex(space-around);
+    width: 100%;
+
+    .button {
       width: 30px;
       height: 30px;
       border-radius: 100%;
       border: none;
-      background-color: colors.$background-close-button;
-      padding: 4px;
+      padding: 5px;
       cursor: pointer;
 
       img {
         @include mixins.whiteFilter();
-      }
-    }
-
-    .img_box {
-      width: 100px;
-      height: 100px;
-    }
-
-    .field {
-      width: 100%;
-
-      .title {
-        text-align: center;
-        font-size: 1em;
-        margin-bottom: 4px;
-      }
-
-      input {
         width: 100%;
-        padding: 6px 10px;
-        font-size: 1em;
-        outline: none;
-        border: 1px solid colors.$input-border-primary;
-        border-radius: 4px;
-
-        &:focus {
-          border-color: colors.$input-border-primary-selected;
-        }
       }
     }
 
-    .options {
-      @include mixins.displayFlex(space-around);
-      width: 100%;
+    .button.edit {
+      background-color: colors.$button-bg-primary;
+    }
 
-      .button {
-        width: 30px;
-        height: 30px;
-        border-radius: 100%;
-        border: none;
-        padding: 6px;
-        cursor: pointer;
-
-        img {
-          @include mixins.whiteFilter();
-          width: 100%;
-        }
-      }
-
-      .button.edit {
-        background-color: colors.$background-button-primary;
-      }
-
-      .button.delete {
-        background-color: colors.$background-close-button;
-      }
+    .button.delete {
+      background-color: colors.$button-bg-close;
     }
   }
 }

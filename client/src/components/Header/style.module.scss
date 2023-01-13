@@ -3,12 +3,12 @@
 @use '../../styles/medias' as *;
 
 $menu-icon: '../../assets/menu.svg';
-$close-icon: '../../assets  /close.svg';
+$close-icon: '../../assets/close.svg';
 
 .header {
   width: 100%;
   padding: 10px 30px 5px 30px;
-  background-color: colors.$main-background;
+  background-color: colors.$main-bg;
   @include mixins.displayFlex(flex-start);
   position: relative;
 
@@ -39,11 +39,11 @@ $close-icon: '../../assets  /close.svg';
       background: url($menu-icon);
       background-repeat: no-repeat;
       background-position: center;
-      z-index: 1000;
+      z-index: 1001;
       display: none;
   
       &.active {
-        background: url($close-icon)
+        background: url($close-icon);
       }
   
       &.active ~ .nav_list {
@@ -69,8 +69,9 @@ $close-icon: '../../assets  /close.svg';
         width: 100%;
         height: 100vh;
         flex-direction: column;
-        background-color: colors.$main-background;
+        background-color: colors.$main-bg;
         font-size: 1.5em;
+        z-index: 1000;
       }
 
       .nav_item {
@@ -84,7 +85,7 @@ $close-icon: '../../assets  /close.svg';
           color: colors.$text-primary;
 
           &:hover {
-            color: colors.$text-primary-hovered;
+            color: colors.$text-primary-highlighted;
           }
 
           @include media("desktop") {

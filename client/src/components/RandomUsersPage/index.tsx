@@ -11,17 +11,20 @@ import styles from './style.module.scss'
 import { lowerCase } from '../../utils/functions'
 
 const numberOfPeoplePerPage = 10
+const initialApiUrl = `${randomUserApiUrl}?results=500`
 
 export const RandomUsersPage = () => {
   const [ searchParams, setSearchParams ] = useSearchParams();
   const [ searchValue, setSearchValue ] = useState(searchParams.get('search') || '')
   const debouncedSearchValue = useDebounce(searchValue, 300)
+  
   const [ users, setUsers ] = useState<Person[]>([])
   const [ filteredUsers, setFilteredUsers ] = useState<Person[]>([])
+
   const pageParam = parseInt(searchParams.get('page') || '1')
   const currentPage = isNaN(pageParam) ? 1 : pageParam
   const lastPage = Math.ceil(filteredUsers.length / numberOfPeoplePerPage)
-  const initialApiUrl = `${randomUserApiUrl}?results=500`
+
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value)
@@ -47,11 +50,10 @@ export const RandomUsersPage = () => {
     const searchParam = searchValue.length > 0 ? `search=${searchValue}` : ''
     setSearchParams(`?page=1&${searchParam}`)
     setFilteredUsers(filtered)
-    console.log(filtered)
   }
 
   useEffect(() => {
-    // fetchUsers()
+    fetchUsers()
   }, [])
 
   useEffect(() => {
@@ -84,7 +86,6 @@ export const RandomUsersPage = () => {
               const initialPosition = (currentPage - 1) * numberOfPeoplePerPage
               const finalPosition = (currentPage * numberOfPeoplePerPage) - 1
               const isInRange = index >= initialPosition && index <= finalPosition
-
               
               if(!isInRange) return
 

@@ -45,6 +45,7 @@ export const RandomDogPage = () => {
     <div className={styles.random_dog}>
       <h2 className={styles.title}>Encontre um cachorro</h2>
       <button className={styles.refresh_button} onClick={refreshImage}>Refresh</button>
+      <span className={styles.alert_message}>⚠️Algumas imagens podem demorar devido ao tamanho!</span>
       <ReferenceLink link={referenceLink} />
       <div className={styles.dog_image_container}>
         <div className={styles.image_box}>

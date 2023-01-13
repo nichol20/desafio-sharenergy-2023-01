@@ -26,18 +26,18 @@ export interface Person {
 }
 
 export interface Dob {
-  date: Date;
+  date: string;
   age:  number;
 }
 
 export interface Registered {
-  date: Date;
+  date: string;
   age:  number;
 }
 
 export interface ID {
   name:  string;
-  value: string;
+  value: string | null;
 }
 
 export interface Location {

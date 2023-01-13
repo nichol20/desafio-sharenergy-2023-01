@@ -1,0 +1,62 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.confirmation_modal {
+  position: fixed;
+  z-index: 1002;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: colors.$medium-shadow;
+  @include mixins.displayFlex();
+
+  .warning_container {
+    padding: 20px;
+    background: colors.$modal-bg-primary;
+    border-radius: 20px;
+    @include mixins.displayFlex();
+    flex-direction: column;
+    gap: 10px;
+
+    h2 {
+      font-size: 1.5em;
+    }
+
+    span {
+      font-size: 1em;
+    }
+  }
+
+  .actions_box {
+    display: flex;
+    gap: 90px;
+    margin-top: 20px;
+  }
+
+  button {
+    padding: 7px 9px;
+    color: colors.$button-text-primary;
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+    border-radius: 8px;
+  }
+
+  button.cancel {
+    background-color: colors.$button-bg-close;
+
+    &:hover {
+      background-color: colors.$button-bg-close-hovered;
+    }
+  }
+
+  button.delete {
+    background-color: colors.$button-bg-primary;
+
+    &:hover {
+      background-color: colors.$button-bg-primary-hovered;
+    }
+  }
+}

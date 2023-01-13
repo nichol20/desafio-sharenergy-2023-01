@@ -10,11 +10,20 @@
 .title {
   font-size: 2em;
   color: colors.$text-primary;
+
+  @include media("phone") {
+    font-size: 1.2em;
+  }
 }
 
 .refresh_button {
   @include mixins.buttonStylePrimary();
   padding: 8px 10px;
+}
+
+.alert_message {
+  font-size: 1em;
+  color: colors.$text-alert;
 }
 
 .dog_image_container {

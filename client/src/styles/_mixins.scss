@@ -26,11 +26,11 @@
   border: none;
   cursor: pointer;
   transition: .3s;
-  background-color: colors.$background-button-primary;
-  color: colors.$text-button-primary;
+  background-color: colors.$button-bg-primary;
+  color: colors.$button-text-primary;
   box-shadow: 2px 2px 5px 1px colors.$light-shadow;
   
   &:hover {
-    background-color: colors.$background-button-primary-hovered;
+    background-color: colors.$button-bg-primary-hovered;
   }
 }

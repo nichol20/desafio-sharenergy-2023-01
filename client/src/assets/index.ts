@@ -7,6 +7,7 @@ export { default as trashIcon } from './trash.svg'
 export { default as pencilIcon } from './pencil.svg'
 export { default as personIcon } from './person.svg'
 export { default as addIcon } from './add.svg'
+export { default as checkmarkIcon } from './checkmark.svg'
 
 export { default as notFoundImg } from './not-found-cat.png'
 export { default as catHoldingSearchSignImg } from './cat-holding-search-sign.png'

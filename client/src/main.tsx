@@ -1,43 +1,58 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
+import Root from './Root'
 import App from './App'
-import { RandomUsersPage, LoginPage, HttpCatPage, RandomDogPage, ClientsRegistrationPage } from './components'
-import { AuthProvider } from './contexts/AuthContext'
+import { 
+  RandomUsersPage, 
+  LoginPage, 
+  HttpCatPage, 
+  RandomDogPage, 
+  ClientsRegistrationPage, 
+  RegisterPage 
+} from './components'
+
 import './styles/global.scss'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Root />,
     children: [
       {
         path: '/',
-        element: <RandomUsersPage />
+        element: <App />,
+        children: [
+          {
+            path: '/',
+            element: <RandomUsersPage />
+          },
+          {
+            path: '/http-cat',
+            element: <HttpCatPage />
+          },
+          {
+            path: '/random-dog',
+            element: <RandomDogPage />
+          },
+          {
+            path: '/clients-registration',
+            element: <ClientsRegistrationPage />
+          }
+        ]
       },
       {
-        path: '/http-cat',
-        element: <HttpCatPage />
+        path: '/login',
+        element: <LoginPage />
       },
       {
-        path: '/random-dog',
-        element: <RandomDogPage />
-      },
-      {
-        path: '/clients-registration',
-        element: <ClientsRegistrationPage />
+        path: '/register',
+        element: <RegisterPage />
       }
     ]
-  },
-  {
-    path: '/login',
-    element: <LoginPage />
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>,
+  <RouterProvider router={router} />,
 )
