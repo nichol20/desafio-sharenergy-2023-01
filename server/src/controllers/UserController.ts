@@ -1,5 +1,6 @@
-import db from "../config/db";
+import bcrypt from 'bcrypt'
 
+import db from "../config/db";
 import { Collections } from "../enums/Collections";
 import { UserDocument } from "../types/user";
 import { AuthController } from "./AuthController";
@@ -13,13 +14,17 @@ interface LoginResponse {
 
 interface CreateResponse extends LoginResponse {}
 
+const saltRounds = 10;
+
 export class UserController {
   private _usersCollection = db.getDb().collection<UserDocument>(Collections.USERS)
 
   async login(username: string, password: string): Promise<LoginResponse | undefined> {
-    const user = await this._usersCollection.findOne({ username, password })
-    
+    const user = await this._usersCollection.findOne({ username })
     if(!user) return
+
+    const match = await bcrypt.compare(password, user.password);
+    if(!match) return
 
     const authController = new AuthController
     const refreshToken = authController.generateRefreshToken({}, { subject: String(user._id) })
@@ -36,9 +41,12 @@ export class UserController {
   }
 
   async create(user: Omit<UserDocument, "clientList">): Promise<CreateResponse> {
-    const newUser = {
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds)
+
+    const newUser: UserDocument = {
       ...user,
-      clientList: []
+      clientList: [],
+      password: hashedPassword
     }
     const { insertedId } = await this._usersCollection.insertOne(newUser)
 
@@ -47,10 +55,12 @@ export class UserController {
     
     await authController.storeRefreshToken(refreshToken)
 
+    const { password, ...newUserRest} = newUser
+
     return {
       accessToken: authController.generateAccessToken({}, { subject: String(insertedId) }),
       refreshToken,
-      user: newUser
+      user: newUserRest
     }
   }
 

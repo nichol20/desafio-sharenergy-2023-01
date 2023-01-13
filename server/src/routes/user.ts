@@ -10,13 +10,20 @@ userRoutes.post('/users', async (req, res) => {
   if(!username || !password ) return res.status(400).json({ message: 'Missing information' })
 
   const userController = new UserController
-  const usernameExist = await userController.isUsernameInUse(username)
 
-  if(usernameExist) return res.status(409).json({ message: 'User already exists' })
-
-  const response = await userController.create({ username, password })
-
-  return res.status(201).json(response)
+  try {
+    const usernameExist = await userController.isUsernameInUse(username)
+  
+    if(usernameExist) return res.status(409).json({ message: 'User already exists' })
+  
+    const response = await userController.create({ username, password })
+  
+    return res.status(201).json(response)
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
+  }
 })
 
 
@@ -30,7 +37,8 @@ userRoutes.get('/users/profile', mustBeAuthenticated, async (req, res) => {
 
     return res.status(200).json(user)
   } catch (error) {
-    return res.status(404).json({ message: 'User not found' })
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
   }
 })
 
@@ -40,8 +48,14 @@ userRoutes.get('/users', mustBeAuthenticated, async (req, res) => {
   const limitQuery = parseInt(String(req.query.limit))
   const limit = isNaN(limitQuery) ? undefined : limitQuery
 
-  const users = await userController.find(limit)
-  return res.status(200).json(users)
+  try {
+    const users = await userController.find(limit)
+    return res.status(200).json(users)
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
+  }
 })
 
 
@@ -56,7 +70,8 @@ userRoutes.get('/users/:userId', mustBeAuthenticated, async (req, res) => {
 
     return res.status(200).json(user)
   } catch (error) {
-    return res.status(404).json({ message: 'User not found' })
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
   }
 })
 
@@ -67,9 +82,16 @@ userRoutes.post('/login', async (req, res) => {
   if(!username || !password ) return res.status(400).json({ message: 'Missing information' })
 
   const userController = new UserController
-  const response = await userController.login(username, password)
 
-  if(!response) return res.status(401).json({ message: 'Wrong crendentials' })
-
-  return res.status(201).json(response)
+  try {
+    const response = await userController.login(username, password)
+  
+    if(!response) return res.status(401).json({ message: 'Wrong crendentials' })
+  
+    return res.status(201).json(response)
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
+  }
 })

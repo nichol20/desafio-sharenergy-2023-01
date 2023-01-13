@@ -9,7 +9,13 @@ authRoutes.post('/refresh-token', async (req, res) => {
   if(!refreshToken) return res.status(400).json({ message: 'Missing information '})
 
   const authController = new AuthController
-  const refreshTokenExist = !!await authController.getRefreshToken(refreshToken)
+  let refreshTokenExist = false
+  try {
+    refreshTokenExist = !!await authController.getRefreshToken(refreshToken)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
+  }
 
   if(!refreshTokenExist) return res.status(498).json({ message: "Invalid token" })
 

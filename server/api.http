@@ -1,3 +1,6 @@
+### if you want to use this you will need the "Rest Client" extension in VSCode
+
+### ----------------- USER -----------------
 POST http://localhost:5000/users
 Content-Type: application/json
 
@@ -16,55 +19,62 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:5000/users/profile
+Authorization: Bearer token
+
+###
 GET http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTI3OTgsImV4cCI6MTY3MzQ5NjM5OCwic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.rUIF1wCNtGjec9Y3e2TJLuO-zsrjjQZkEYOoieRZKIc
+Authorization: Bearer token
 
 ###
 GET http://localhost:5000/users/63bf78f74c74350913597181
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTI3OTgsImV4cCI6MTY3MzQ5NjM5OCwic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.rUIF1wCNtGjec9Y3e2TJLuO-zsrjjQZkEYOoieRZKIc
+Authorization: Bearer token
 
+### ----------------- CLIENT -----------------
 ###
 POST http://localhost:5000/clients
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3MzUwMDgzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.j0hZ-hfKugceRHSotC395ZjO6c4zfNrMt9K0NZ0N1kg
+Authorization: Bearer token
 Content-Type: application/json
 
 {
-  "name": "string2",
-  "email": "string2",
-  "phone": "string2",
-  "address": "string2",
-  "cpf": "string2"
+  "name": "name",
+  "email": "email",
+  "phone": "phone",
+  "address": "address",
+  "cpf": "cpf"
 }
 
 ###
 GET http://localhost:5000/clients
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3MzUwMDgzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.j0hZ-hfKugceRHSotC395ZjO6c4zfNrMt9K0NZ0N1kg
+Authorization: Bearer token
 
 ###
 GET http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3MzUwMDgzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.j0hZ-hfKugceRHSotC395ZjO6c4zfNrMt9K0NZ0N1kg
+Authorization: Bearer token
 
 ###
 PATCH http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM1MzMwMjMsImV4cCI6MTY3MzUzNjYyMywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.-0pnuQTvzkzP5B2-xRfmm-rP7coJs4W6Tv__DZswrrc
+Authorization: Bearer token
 Content-Type: application/json
 
 {
-  "name":       "stringUpdated",
-  "email":      "stringUpdated",
-  "phone":      "stringUpdated",
-  "address":    "stringUpdated",
-  "cpf":        "stringUpdated"
+  "name":       "nameUpdated",
+  "email":      "emailUpdated",
+  "phone":      "phoneUpdated",
+  "address":    "addressUpdated",
+  "cpf":        "cpfUpdated"
 }
 
 ###
 DELETE http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM1MzMwMjMsImV4cCI6MTY3MzUzNjYyMywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.-0pnuQTvzkzP5B2-xRfmm-rP7coJs4W6Tv__DZswrrc
+Authorization: Bearer token
 
+
+### ----------------- AUTH -----------------
 ###
 POST http://localhost:5000/refresh-token
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NzM0OTcyMzcsImV4cCI6MTY3NDc5MzIzNywic3ViIjoiNjNiZjc5M2Q0Yzc0MzUwOTEzNTk3MTgzIn0.8S4u1SOcSabXKJ5iCM7265EKbncamzoApVQqaioMVXo"
+  "refreshToken": "token"
 }

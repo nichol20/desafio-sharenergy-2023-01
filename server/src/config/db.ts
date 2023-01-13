@@ -1,4 +1,5 @@
 import { Db, MongoClient,  } from "mongodb";
+import bcrypt from 'bcrypt'
 
 import { Collections } from "../enums/Collections";
 import { UserDocument } from "../types/user";
@@ -22,6 +23,7 @@ const standardUsers: UserDocument[] = [
     clientList: [] 
   },
 ]
+const saltRounds = 10;
 
 export default {
   connectToServer: async () => {
@@ -34,7 +36,13 @@ export default {
     standardUsers.forEach(async user => {
       const userAlreadyCreated = await userCollection.findOne({ username: user.username })
 
-      if(!userAlreadyCreated) await userCollection.insertOne(user)
+      if(!userAlreadyCreated) {
+        const hashedPassword = await bcrypt.hash(user.password, saltRounds)
+        await userCollection.insertOne({
+          ...user,
+          password: hashedPassword
+        })
+      }
     })
     
     return 'done.'
