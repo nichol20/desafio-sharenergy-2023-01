@@ -1,16 +1,18 @@
 import { useContext, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { addIcon, personIcon } from '../../assets'
+
+import { http } from '../../utils/http'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useDebounce } from '../../hooks/useDebounce'
-import { Client } from '../../types/user'
 import { AccessTokenCookieController } from '../../utils/cookies'
+
+import { Client } from '../../types/user'
+
 import { lowerCase } from '../../utils/functions'
-import { http } from '../../utils/http'
-import { HighlightableText } from '../HighlightableText'
-import { Pagination } from '../Pagination'
-import { SearchInput } from '../SearchInput'
+import { Pagination, SearchInput, IconsPicker, HighlightableText } from '..'
 import { ClientModal } from './ClientModal'
+
+import { addIcon, personIcon } from '../../assets'
 import styles from './style.module.scss'
 
 type CurrentClient = Client | Omit<Client, "id" | "created_at">
@@ -38,7 +40,8 @@ export const ClientsRegistrationPage = () => {
     email: '',
     address: '',
     cpf: '',
-    phone: ''
+    phone: '',
+    icon: ''
   })
 
   const openModal = () => {
@@ -47,6 +50,14 @@ export const ClientsRegistrationPage = () => {
       const clientModalEl = document.querySelector(`.${styles.client_modal}`)
       clientModalEl?.classList.add(styles.active)
     })
+  }
+
+  const closeModal = () => {
+    const clientModalEl = document.querySelector(`.${styles.client_modal}`)
+    clientModalEl?.classList.remove(styles.active)
+    setTimeout(() => {
+      setShowModal(false)
+    }, 100)
   }
 
   const handleClientCardClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
@@ -62,8 +73,8 @@ export const ClientsRegistrationPage = () => {
           Authorization: `Bearer ${AccessTokenCookieController.get()}`
         }
       })
-      console.log(data)
       setClients(data)
+      setFilteredClients(data)
     } catch (error) {
       
     }
@@ -76,7 +87,8 @@ export const ClientsRegistrationPage = () => {
       email: '',
       address: '',
       cpf: '',
-      phone: ''
+      phone: '',
+      icon: ''
     })
     openModal()
   }
@@ -120,7 +132,11 @@ export const ClientsRegistrationPage = () => {
             if(!isInRange) return
 
             return (
-              <div className={styles.client_card} onClick={event => handleClientCardClick(event, index)} key={index}>
+              <div
+               className={styles.client_card} 
+               onClick={event => handleClientCardClick(event, index)} 
+               key={index}
+              >
                 <div className={styles.img_box}>
                   <img src={personIcon} alt="person" />
                 </div>
@@ -144,7 +160,7 @@ export const ClientsRegistrationPage = () => {
       { 
         showModal && 
         <ClientModal
-         setShowModal={setShowModal} 
+         onClose={closeModal} 
          type={clientModalType} 
          client={currentClient} 
          refreshClients={refreshClients}

@@ -6,6 +6,7 @@ import db from './config/db'
 import { clientRoutes } from './routes/client'
 import { userRoutes } from './routes/user'
 import { authRoutes } from './routes/auth'
+import { imageRoutes } from './routes/image'
 
 dotenv.config()
 
@@ -17,9 +18,12 @@ app.use(cors({
   origin: process.env.FRONTEND_URL
 }))
 
+app.use('/images', express.static('src/images'))
+
 app.use(clientRoutes)
 app.use(userRoutes)
 app.use(authRoutes)
+app.use(imageRoutes)
 
 // Global error handling
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

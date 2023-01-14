@@ -88,6 +88,8 @@
   }
 }
 
+/*------------------- CLIENT MODAL -------------------*/
+
 .client_modal {
   position: fixed;
   top: 0;
@@ -114,7 +116,6 @@
   .responsive_box_absolute {
     position: absolute;
     top: 16px;
-    left: 0;
     width: 100%;
     @include mixins.displayFlex();
     
@@ -152,6 +153,21 @@
   .img_box {
     width: 100px;
     height: 100px;
+    position: relative;
+
+    .change_person_icon_button {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      padding: 5px;
+      border-radius: 100%;
+      border: none;
+      bottom: 0px;
+      right: 0px;
+      margin: 10px;
+      background-color: colors.$modal-bg-primary;
+      cursor: pointer;
+    }
   }
 
   .field {

@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           AccessTokenCookieController.set(data.accessToken)
           const user = await fetchUser(data.accessToken)
           setUser(user)
+          return
         } catch (error) {
           RefreshTokenCookieController.remove()
           throw error

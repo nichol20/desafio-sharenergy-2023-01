@@ -22,6 +22,7 @@ services:
       JWT_SECRET: JWT_SECRET@desafiosharenergy
       REFRESH_TOKEN_SECRET: REFRESH_TOKEN_SECRET@desafiosharenergy
       FRONTEND_URL: http://localhost:5173
+      BASE_URL: http://localhost:5000
 
   client:
     build: ./client

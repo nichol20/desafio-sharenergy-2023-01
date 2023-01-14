@@ -53,7 +53,7 @@ export const RandomUsersPage = () => {
   }
 
   useEffect(() => {
-    fetchUsers()
+    // fetchUsers()
   }, [])
 
   useEffect(() => {

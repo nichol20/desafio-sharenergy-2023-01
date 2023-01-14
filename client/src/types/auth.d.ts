@@ -10,7 +10,6 @@ export interface CreateUserResponse extends LoginResponse {}
 
 export type GetProfileResponse = User
 
-
 export interface GetNewAccessTokenResponse {
   accessToken:  string
   refreshToken: string

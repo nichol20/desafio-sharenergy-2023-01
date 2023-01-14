@@ -45,6 +45,14 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:5000/users/check-username-status
+Content-Type: application/json
+
+{
+  "username": "desafiosharenergy"
+}
+
+###
 GET http://localhost:5000/clients
 Authorization: Bearer token
 
@@ -78,3 +86,9 @@ Content-Type: application/json
 {
   "refreshToken": "token"
 }
+
+
+### ----------------- IMAGE -----------------
+###
+GET http://localhost:5000/images/client-icons
+Authorization: Bearer token

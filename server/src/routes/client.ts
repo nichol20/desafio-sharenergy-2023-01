@@ -5,7 +5,7 @@ import { mustBeAuthenticated } from '../middlewares/auth'
 export const clientRoutes = express.Router()
 
 clientRoutes.post('/clients', mustBeAuthenticated, async (req, res) => {
-  const { name, email, phone, address, cpf } = req.body
+  const { name, email, phone, address, cpf, icon } = req.body
 
   const clientController = new ClientController
 
@@ -15,7 +15,8 @@ clientRoutes.post('/clients', mustBeAuthenticated, async (req, res) => {
       email: email || '',
       phone: phone || '',
       address: address || '',
-      cpf: cpf || ''
+      cpf: cpf || '',
+      icon: icon || ''
     }, req.authorId!)
   
     return res.status(201).json(newClient)
@@ -56,7 +57,7 @@ clientRoutes.get('/clients/:clientId', mustBeAuthenticated, async (req, res) => 
 
 
 clientRoutes.patch('/clients/:clientId', mustBeAuthenticated, async (req, res) => {
-  const { name, email, phone, address, cpf } = req.body
+  const { name, email, phone, address, cpf, icon } = req.body
   const { clientId } = req.params
   const clientController = new ClientController
 
@@ -67,6 +68,7 @@ clientRoutes.patch('/clients/:clientId', mustBeAuthenticated, async (req, res) =
       ...typeof(phone) === 'string' && { phone },
       ...typeof(address) === 'string' && { address },
       ...typeof(cpf) === 'string' && { cpf },
+      ...typeof(icon) === 'string' && { icon },
       id: clientId
     }
     

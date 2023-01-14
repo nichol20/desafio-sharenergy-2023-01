@@ -75,6 +75,25 @@ userRoutes.get('/users/:userId', mustBeAuthenticated, async (req, res) => {
   }
 })
 
+userRoutes.post('/users/check-username-status', async (req, res) => {
+  const { username } = req.body
+  const userController = new UserController
+
+  if(!username) return res.status(400).json({ message: 'Missing information' })
+
+  try {
+    let status: string
+    const isUsernameInUse = await userController.isUsernameInUse(username)
+
+    if(isUsernameInUse) status = 'registered'
+    else status = 'not registered'
+
+    return res.status(200).json({ status })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Something broke!' })
+  }
+})
 
 userRoutes.post('/login', async (req, res) => {
   const { username, password } = req.body

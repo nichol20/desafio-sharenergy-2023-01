@@ -11,4 +11,5 @@ export interface Client {
   address:    string
   cpf:        string
   created_at: string
+  icon:       string
 }

@@ -2,10 +2,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { AuthContext } from '../../contexts/AuthContext'
+import { useDebounce } from '../../hooks/useDebounce'
+import { http } from '../../utils/http'
 
 import styles from './style.module.scss'
 
 export const RegisterPage = () => {
+  const [ username, setUsername ] = useState('')
+  const debouncedSearchValue = useDebounce(username, 300)
+  const [ usernameExistsError, setUsernameExistsError ]= useState(false)
   const [ password, setPassword ] = useState('')
   const [ confirmPassword, setConfirmPassword ] = useState('')
   const [ emptyFieldError, setEmptyFieldError ] = useState(false)
@@ -35,7 +40,9 @@ export const RegisterPage = () => {
     try {
       await signUp(username, password)
     } catch (error: any) {
-
+      if(error.response.data.message === 'User already exists') {
+        setUsernameExistsError(true)
+      }
     }
   }
 
@@ -47,6 +54,27 @@ export const RegisterPage = () => {
     setConfirmPassword(event.target.value)
   }
 
+  const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsernameExistsError(false)
+    setUsername(event.target.value)
+  }
+
+  // triggers the function after a while that the user stops typing
+  useEffect(() => {
+    const checkUsernameStatus = async () => {
+      try {
+        const { data } = await http.post('/users/check-username-status', {
+          username
+        })
+        if(data.status === 'registered') setUsernameExistsError(true)
+      } catch (error) {
+        
+      }
+    }
+
+    checkUsernameStatus()
+  }, [ debouncedSearchValue ])
+
   useEffect(() => {
     if(user) navigate('/')
   }, [ user ])
@@ -56,7 +84,15 @@ export const RegisterPage = () => {
       <form className={styles.register_interface} onSubmit={handleSubmit}>
         <div className={styles.field}>
           <label htmlFor="username">Usuário</label>
-          <input type="text" name='username' id='username'/>
+          <input
+           type="text" 
+           name='username' 
+           id='username'
+           onChange={handleUsernameInputChange}
+          />
+          { usernameExistsError && (
+            <span className={styles.error_message}>Esse usuário já está em uso</span> 
+          )}
         </div>
         <div className={styles.field}>
           <label htmlFor="password">Senha</label>

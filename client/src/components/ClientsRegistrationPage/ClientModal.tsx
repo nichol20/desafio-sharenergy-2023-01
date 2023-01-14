@@ -1,36 +1,32 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { checkmarkIcon, closeIcon, pencilIcon, personIcon, trashIcon } from '../../assets'
 import { Client } from '../../types/user'
 import { AccessTokenCookieController } from '../../utils/cookies'
 import { http } from '../../utils/http'
 import { ConfirmationModal } from '../ConfirmationModal'
+import { IconsPicker } from '../IconsPicker'
 import styles from './style.module.scss'
 
 interface ClientModalProps {
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>
+  onClose: () => void
   client: Client | Omit<Client, "id" | "created_at">
   type: 'edit' | 'create'
   refreshClients: () => Promise<void>
 }
 
 
-export const ClientModal = ({ setShowModal, type, client, refreshClients }: ClientModalProps) => {
-  const changeIcon = type === 'edit' ? pencilIcon : checkmarkIcon
+export const ClientModal = ({ onClose, type, client, refreshClients }: ClientModalProps) => {
+  const submitIcon = type === 'edit' ? pencilIcon : checkmarkIcon
   const [ newClient, setNewClient ] = useState(client)
   const [ askConfirmationToDelete, setAskConfirmationToDelete ] = useState(false)
-
-  const closeModal = () => {
-    const clientModalEl = document.querySelector(`.${styles.client_modal}`)
-    clientModalEl?.classList.remove(styles.active)
-    setTimeout(() => {
-      setShowModal(false)
-    }, 100)
-  }
+  const [ icons, setIcons ] = useState<string[]>([])
+  const [ showIconsPicker, setShowIconsPicker ] = useState(false)
+  const [ currentIcon, setCurrentIcon ] = useState<string>(client.icon)
 
   const createClient = async () => {
     try {
-      const { data } = await http.post('/clients', {
+       await http.post('/clients', {
         ...newClient
       }, {
         headers: {
@@ -38,7 +34,7 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
         }
       })
       await refreshClients()
-      closeModal()
+      onClose()
     } catch (error) {
       console.log(error)
     }
@@ -46,16 +42,16 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
 
   const updateClient = async () => {
     try {
-      const { data } = await http.patch(`/clients/${(client as Client).id}`, { 
-        ...newClient
+      await http.patch(`/clients/${(client as Client).id}`, { 
+        ...newClient,
+        icon: currentIcon
       }, {
         headers: {
           Authorization: `Bearer ${AccessTokenCookieController.get()}`
         }
       })
-      console.log(newClient)
       await refreshClients()
-      closeModal()
+      onClose()
     } catch (error) {
       console.log(error)
     }
@@ -69,7 +65,7 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
         }
       })
       await refreshClients()
-      closeModal()
+      onClose()
     } catch (error) {
       
     }
@@ -88,7 +84,7 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
 
   const handleDeleteButtonClick = () => {
     if(type === 'edit') setAskConfirmationToDelete(true)
-    else closeModal()
+    else onClose()
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -98,16 +94,58 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
     await updateClient()
   }
 
+  const openIconsPicker = () => {
+    setShowIconsPicker(true)
+  }
+
+  const closeIconsPicker = () => {
+    setShowIconsPicker(false)
+  }
+
+  const changeIcon = (index: number) => {
+    setCurrentIcon(icons[index])
+    closeIconsPicker()
+  }
+
+  useEffect(() => {
+    const fetchIcons = async () => {
+      try {
+        const { data } = await http.get('/images/client-icons', {
+          headers: {
+            Authorization: `Bearer ${AccessTokenCookieController.get()}`
+          }
+        })
+        
+        setIcons([personIcon, ...data])
+      } catch (error) {
+        
+      }
+    }
+
+    fetchIcons()
+  }, [])
+
   return (
     <div className={styles.client_modal}>
       <div className={styles.responsive_box_relative}>
         <div className={styles.responsive_box_absolute}>
           <form className={styles.form} onSubmit={handleSubmit}>
-            <button className={styles.close_button} onClick={closeModal} type="button">
+            <button className={styles.close_button} onClick={onClose} type="button">
               <img src={closeIcon} alt="close" />
             </button>
             <div className={styles.img_box}>
-              <img src={personIcon} alt="person" />
+              <img
+               src={currentIcon} 
+               alt="person" 
+               className={styles.person_icon} 
+              />
+              <button
+               className={styles.change_person_icon_button} 
+               type="button"
+               onClick={openIconsPicker}
+              >
+                <img src={pencilIcon} alt="pencil" className={styles.pencil_icon} />
+              </button>
             </div>
             <div className={styles.field}>
               <h5 className={styles.title}>Nome</h5>
@@ -156,7 +194,7 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
             </div>
             <div className={styles.options}>
               <button className={`${styles.edit} ${styles.button}`} type="submit">
-                <img src={changeIcon} alt="pencil" />
+                <img src={submitIcon} alt="pencil" />
               </button>
               <button
                className={`${styles.delete} ${styles.button}`} 
@@ -169,6 +207,13 @@ export const ClientModal = ({ setShowModal, type, client, refreshClients }: Clie
           </form>
         </div>
       </div>
+
+      {showIconsPicker && 
+      <IconsPicker
+       icons={icons} 
+       onClose={closeIconsPicker} 
+       onIconClick={changeIcon} 
+      />}
 
       { askConfirmationToDelete && 
       <ConfirmationModal
