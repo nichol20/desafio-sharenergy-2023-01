@@ -1,0 +1,59 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.toast_container {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  width: 250px;
+  gap: 10px;
+  top: 0;
+  right: 0;
+}
+
+.toast {
+  position: relative;
+  cursor: pointer;
+  transition: transform 300ms ease-in-out;
+  transform: translateX(110%);
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+
+  &.active {
+    transform: translate(0, 0);
+  }
+
+  &[data-status="success"] {
+    background-color: colors.$toast-success-color;
+  }
+ 
+  &[data-status="error"] {
+    background-color: colors.$toast-error-color;
+  }
+
+  &::after {
+    content: "\00D7";
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    color: colors.$toast-text-color;
+  }
+}
+
+.description {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+  color: colors.$toast-text-color;
+
+  h5 {
+    font-size: 1.2em;
+  }
+
+  span{
+    font-size: 1em;
+  }
+}
