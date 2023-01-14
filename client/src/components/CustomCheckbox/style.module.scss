@@ -1,0 +1,57 @@
+@use '../../styles/colors';
+
+.checkbox_container {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: 20px;
+  height: 20px;
+  display: block;
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgb(212, 212, 212);
+    border-radius: 4px;
+  }
+
+  &:hover .checkmark {
+    background: rgb(180, 180, 180);
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 4px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    display: none;
+  }
+
+  input[type="checkbox"]:checked ~ .checkmark {
+    background-color: colors.$button-bg-primary;
+  }
+
+  input[type="checkbox"]:checked ~ .checkmark:after {
+    display: block;
+  }
+}
+
+// Dark theme
+.checkbox_container[data-theme="dark"] {
+  input[type="checkbox"]:checked ~ .checkmark {
+    background-color: colors.$button-bg-primary-dark;
+  }
+}

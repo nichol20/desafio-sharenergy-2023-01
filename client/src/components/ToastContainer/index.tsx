@@ -11,11 +11,11 @@ interface ToastData {
   id: string
 }
 
-export interface ToastContainerRef {
+export interface ToastRef {
   toast: ToastFunction
 }
 
-export const ToastContainer = forwardRef<ToastContainerRef>((props, ref) => {
+export const ToastContainer = forwardRef<ToastRef>((props, ref) => {
   const [ list, setList ] = useState<ToastData[]>([])
   
   const toast: ToastFunction = (message, title, status) => {

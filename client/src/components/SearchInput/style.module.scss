@@ -5,7 +5,7 @@
 .search_box {
   @include mixins.displayFlex();
   padding: 5px 10px;
-  background: colors.$input-bg-primary;
+  background-color: colors.$input-bg-primary;
   border: 1px solid colors.$input-border-primary;
   border-radius: 4px;
 
@@ -23,4 +23,15 @@
   img {
     width: 20px;
   }
+}
+
+// Dark theme
+.search_box {
+  background-color: colors.$input-bg-primary-dark;
+  border: 1px solid colors.$input-border-primary-dark;
+
+  &:has(> input:focus) {
+    border-color: colors.$input-border-primary-selected-dark;
+  }
+
 }

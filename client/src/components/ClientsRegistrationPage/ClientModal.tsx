@@ -1,12 +1,14 @@
+import { useContext, useEffect, useRef, useState } from 'react'
 
-import { useEffect, useState } from 'react'
-import { checkmarkIcon, closeIcon, pencilIcon, personIcon, trashIcon } from '../../assets'
-import { Client } from '../../types/user'
-import { AccessTokenCookieController } from '../../utils/cookies'
 import { http } from '../../utils/http'
-import { ConfirmationModal } from '../ConfirmationModal'
-import { IconsPicker } from '../IconsPicker'
+import { AccessTokenCookieController } from '../../utils/cookies'
+import { Client } from '../../types/user'
+import { ConfirmationModal, IconsPicker, ToastContainer } from '../'
+import { ToastRef } from '../ToastContainer'
+
+import { checkmarkIcon, closeIcon, pencilIcon, personIcon, trashIcon } from '../../assets'
 import styles from './style.module.scss'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 interface ClientModalProps {
   onClose: () => void
@@ -15,19 +17,22 @@ interface ClientModalProps {
   refreshClients: () => Promise<void>
 }
 
-
 export const ClientModal = ({ onClose, type, client, refreshClients }: ClientModalProps) => {
+  const { theme } = useContext(ThemeContext)
+
   const submitIcon = type === 'edit' ? pencilIcon : checkmarkIcon
   const [ newClient, setNewClient ] = useState(client)
   const [ askConfirmationToDelete, setAskConfirmationToDelete ] = useState(false)
   const [ icons, setIcons ] = useState<string[]>([])
   const [ showIconsPicker, setShowIconsPicker ] = useState(false)
-  const [ currentIcon, setCurrentIcon ] = useState<string>(client.icon)
+  const [ currentIcon, setCurrentIcon ] = useState<string>(client.icon || personIcon)
+  const toastRef = useRef<ToastRef>(null)
 
   const createClient = async () => {
     try {
        await http.post('/clients', {
-        ...newClient
+        ...newClient,
+        icon: currentIcon === personIcon ? '' : currentIcon
       }, {
         headers: {
           Authorization: `Bearer ${AccessTokenCookieController.get()}`
@@ -36,7 +41,7 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
       await refreshClients()
       onClose()
     } catch (error) {
-      console.log(error)
+      toastRef.current?.toast('falha ao criar cliente', 'Falha na criação', 'error')
     }
   }
 
@@ -44,7 +49,7 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
     try {
       await http.patch(`/clients/${(client as Client).id}`, { 
         ...newClient,
-        icon: currentIcon
+        icon: currentIcon === personIcon ? '' : currentIcon
       }, {
         headers: {
           Authorization: `Bearer ${AccessTokenCookieController.get()}`
@@ -53,7 +58,7 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
       await refreshClients()
       onClose()
     } catch (error) {
-      console.log(error)
+      toastRef.current?.toast('falha ao atualizar cliente', 'Falha na atualização', 'error')
     }
   }
 
@@ -67,7 +72,7 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
       await refreshClients()
       onClose()
     } catch (error) {
-      
+      toastRef.current?.toast('falha ao remover cliente', 'falha na remoção', 'error')
     }
   }
 
@@ -126,14 +131,14 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
   }, [])
 
   return (
-    <div className={styles.client_modal}>
+    <div className={styles.client_modal} data-theme={theme} >
       <div className={styles.responsive_box_relative}>
         <div className={styles.responsive_box_absolute}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <button className={styles.close_button} onClick={onClose} type="button">
               <img src={closeIcon} alt="close" />
             </button>
-            <div className={styles.img_box}>
+            <div className={styles.person_icon_box}>
               <img
                src={currentIcon} 
                alt="person" 
@@ -221,6 +226,8 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
        onDelete={deleteClient}
        message="tem certeza de que deseja deletar?"
       />}
+
+      <ToastContainer ref={toastRef} />
     </div>
   )
 }

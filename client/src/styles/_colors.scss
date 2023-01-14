@@ -1,17 +1,39 @@
+// Light theme
 $main-bg: #F4F7FA;
 $text-primary: #161C2D;
 $text-secondary: #494e5c;
 $text-primary-highlighted: #00A2A2;
-$button-bg-close: rgb(255, 37, 37);
-$button-bg-close-hovered: rgb(223, 7, 7);
 $button-bg-primary: #00A2A2;
 $button-bg-primary-hovered: #017c7c;
 $button-text-primary: #fff;
+$modal-text-primary: #000;
 $modal-bg-primary: #fff;
+$modal-bg-secondary: #b9b9b9;
 $input-bg-primary: #fff;
+$input-text-primary: #161C2D;
 $input-border-primary: #d4d4d4;
 $input-border-primary-selected: #00A2A2;
 
+// Dark Theme
+$main-bg-dark: #0e0e0e;
+$text-primary-dark: #dfdfdf;
+$text-secondary-dark: #bebebe;
+$text-primary-highlighted-dark: #ffc21c;
+$button-bg-primary-dark: #e7aa00;
+$button-bg-primary-hovered-dark: #c48f00;
+$button-text-primary-dark: #ffffff;
+$modal-text-primary-dark: #fff;
+$modal-bg-primary-dark: rgb(34 34 34);
+$modal-bg-secondary-dark: #2f2f2f;
+$input-text-primary-dark: #3f3f3f;
+$input-bg-primary-dark: #dfdfdf;
+$input-border-primary-selected-dark: #ffc21c;
+$input-border-primary-dark: #3f3f3f;
+
+
+// unchangeable colors
+$button-bg-close: rgb(255, 37, 37);
+$button-bg-close-hovered: rgb(223, 7, 7);
 $toast-text-color: #fff;
 $toast-error-color: rgb(255, 37, 37);
 $toast-success-color: rgb(73, 255, 37);

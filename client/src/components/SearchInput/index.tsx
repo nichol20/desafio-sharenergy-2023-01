@@ -1,5 +1,7 @@
 
+import { useContext } from 'react'
 import { searchIcon } from '../../assets'
+import { ThemeContext } from '../../contexts/ThemeContext'
 import styles from './style.module.scss'
 
 interface SearchInputProps {
@@ -12,8 +14,10 @@ interface SearchInputProps {
 }
 
 export const SearchInput = ({onChange, id, className, placeholder, maxLength, defaultValue}: SearchInputProps) => {
+  const { theme } = useContext(ThemeContext)
+
  return (
-  <div className={styles.search_box}>
+  <div className={styles.search_box} data-theme={theme}>
     <input
      type="text" 
      onChange={onChange}

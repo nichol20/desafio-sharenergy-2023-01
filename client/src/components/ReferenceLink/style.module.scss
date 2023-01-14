@@ -20,7 +20,7 @@
     width: 95%;
     
     .reference_link {
-      color: colors.$text-primary;
+      color: colors.$input-text-primary;
       font-size: .875em;
       padding: 2px 4px;
       font-weight: 500;
@@ -47,6 +47,31 @@
 
     @include media("phone") {
       width: 24px;
+    }
+
+    img {
+      @include mixins.whiteFilter();
+    }
+  }
+}
+
+// Dark theme
+.reference_link_box {
+  border: 1px solid colors.$input-border-primary-selected-dark;
+  background-color: colors.$input-bg-primary-dark;
+
+  .text_box {   
+    .reference_link {
+      color: colors.$input-text-primary-dark;
+  
+    }
+  }
+
+  .copy_button {
+    background-color: colors.$button-bg-primary-dark;
+
+    &:hover {
+      background-color: colors.$button-bg-primary-hovered-dark;
     }
 
     img {

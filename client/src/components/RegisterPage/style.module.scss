@@ -7,7 +7,7 @@
   min-height: 100vh;
   @include mixins.displayFlex();
   flex-direction: column;
-  background: colors.$main-bg;
+  background-color: colors.$main-bg;
   gap: 10px;
   padding: 10px;
 }
@@ -18,7 +18,7 @@
   min-height: 350px;
   width: 100%;
   @include mixins.displayFlex(flex-start, center);
-  background: #fff;
+  background-color: colors.$modal-bg-primary;
   box-shadow: 1px 1px 10px colors.$light-shadow;
   border-radius: 10px;
   padding: 15px;
@@ -46,6 +46,7 @@
       font-weight: 400;
       outline: none;
       border: 1px solid colors.$input-border-primary;
+      color: colors.$input-text-primary-dark;
 
       &:focus {
         border-color: colors.$input-border-primary-selected;
@@ -85,6 +86,43 @@
 
     .link {
       color: colors.$text-primary-highlighted;
+    }
+  }
+}
+
+// Dark theme
+
+.register_page[data-theme="dark"] {
+  background-color: colors.$main-bg-dark;
+
+  .register_interface {
+    background-color: colors.$modal-bg-primary-dark;
+  
+    .field {
+      label {
+        color: colors.$text-primary-dark; 
+      }
+  
+      input {
+        border-color: colors.$input-border-primary-dark;
+        color: colors.$input-text-primary-dark;
+  
+        &:focus {
+          border-color: colors.$input-border-primary-selected-dark;
+        }
+      }
+    }
+  
+    .submit_button {
+      @include mixins.buttonStylePrimaryDark();
+    }
+  
+    .login_link_box {
+      color: colors.$text-primary-dark;
+
+      .link {
+        color: colors.$text-primary-highlighted-dark;
+      }
     }
   }
 }

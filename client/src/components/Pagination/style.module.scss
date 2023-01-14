@@ -54,3 +54,26 @@
     }
   }
 }
+
+// Dark theme
+
+.pagination[data-theme="dark"] {
+  .page_item {
+    border-color: colors.$input-border-primary-dark;
+    color: colors.$text-primary-highlighted-dark;
+
+    &:hover, &.active {
+      background-color: colors.$button-bg-primary-dark;
+      color: colors.$button-text-primary-dark;
+
+      .icon {
+        @include mixins.whiteFilter();
+      }
+    }
+
+    .icon {
+      width: 20px;
+      filter: invert(78%) sepia(89%) saturate(2543%) hue-rotate(337deg) brightness(99%) contrast(105%);
+    }
+  }
+}

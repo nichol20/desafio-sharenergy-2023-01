@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { httpCatApiUrl, availableHttpCodes } from '../../data/httpCat'
 import { useDebounce } from '../../hooks/useDebounce'
@@ -6,10 +6,12 @@ import { SearchInput, ReferenceLink } from '../'
 
 import { catHoldingSearchSignImg, notFoundImg } from '../../assets'
 import styles from './style.module.scss'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 const initialReferenceLink = 'https://http.cat/[status_code]'
 
 export const HttpCatPage = () => {
+  const { theme } = useContext(ThemeContext)
   const [ requestUrl, setRequestUrl ] = useState(catHoldingSearchSignImg)
   const [ httpCodeUnavailableError, setHttpCodeUnavailableError ] = useState(false)
   const [ referenceLink, setReferenceLink ] = useState(initialReferenceLink)
@@ -52,7 +54,7 @@ export const HttpCatPage = () => {
   }, [debouncedHttpCode])
 
   return (
-    <div className={styles.cat_api}>
+    <div className={styles.cat_api} data-theme={theme}>
       <div className={styles.field}>
         <label htmlFor="httpCode">Insira seu código HTTP:</label>
         <SearchInput

@@ -1,4 +1,9 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { logOutIcon } from '../../assets'
+import { AuthContext } from '../../contexts/AuthContext'
+import { ThemeContext } from '../../contexts/ThemeContext'
+import { ThemeToggle } from '../ThemeToggle'
 
 import styles from './style.module.scss'
 
@@ -14,6 +19,8 @@ const pages: Pages = {
 }
 
 export const Header = () => {
+  const { theme } = useContext(ThemeContext)
+  const { signOut } = useContext(AuthContext)
 
   const toggleMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const buttonEl = event.currentTarget
@@ -27,7 +34,7 @@ export const Header = () => {
   }
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-theme={theme}>
       <h2 className={styles.logo}>Desafio Sharenergy</h2>
       <nav className={styles.nav_bar}>
         <button className={styles.toggle_menu} onClick={toggleMenu}></button>
@@ -43,6 +50,10 @@ export const Header = () => {
               )
             })
           }
+          <ThemeToggle />
+          <button className={styles.logout_button} onClick={signOut}>
+            <img src={logOutIcon} alt="log out" />
+          </button>
         </ul>
       </nav>
     </header>

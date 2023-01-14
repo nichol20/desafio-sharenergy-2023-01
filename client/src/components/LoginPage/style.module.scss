@@ -7,7 +7,7 @@
   min-height: 100vh;
   @include mixins.displayFlex();
   flex-direction: column;
-  background: colors.$main-bg;
+  background-color: colors.$main-bg;
   gap: 10px;
   padding: 10px;
 }
@@ -28,7 +28,7 @@
   min-height: 350px;
   width: 100%;
   @include mixins.displayFlex(flex-start, center);
-  background: #fff;
+  background-color: colors.$modal-bg-primary;
   box-shadow: 1px 1px 10px colors.$light-shadow;
   border-radius: 10px;
   padding: 15px;
@@ -52,10 +52,11 @@
       height: 50px;
       border-radius: 8px;
       padding: 10px 12px;
-      font-size: 1  em;
+      font-size: 1em;
       font-weight: 400;
       outline: none;
       border: 1px solid colors.$input-border-primary;
+      color: colors.$input-text-primary;
 
       &:focus {
         border-color: colors.$input-border-primary-selected;
@@ -71,55 +72,6 @@
   .remember_option {
     @include mixins.displayFlex();
     gap: 8px;
-
-    .checkbox_container {
-      position: relative;
-      cursor: pointer;
-      user-select: none;
-      width: 20px;
-      height: 20px;
-      display: block;
-
-      input[type="checkbox"] {
-        display: none;
-      }
-
-      .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background: rgb(212, 212, 212);
-        border-radius: 4px;
-      }
-
-      &:hover .checkmark {
-        background: rgb(180, 180, 180);
-      }
-
-      .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-        left: 7px;
-        top: 4px;
-        width: 4px;
-        height: 8px;
-        border: solid #fff;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-        display: none;
-      }
-
-      input[type="checkbox"]:checked ~ .checkmark {
-        background-color: colors.$button-bg-primary;
-      }
-
-      input[type="checkbox"]:checked ~ .checkmark:after {
-        display: block;
-      }
-    }
 
     span {
       font-size: .875em;
@@ -154,6 +106,53 @@
 
     .link {
       color: colors.$text-primary-highlighted;
+    }
+  }
+}
+
+// Dark theme 
+
+.login_page[data-theme="dark"] {
+  background-color: colors.$main-bg-dark;
+  
+  .title {
+    color: colors.$text-primary-dark;
+  }
+
+  .login_interface {
+    background-color: colors.$modal-bg-primary-dark;
+  
+    .field {  
+      label {
+        color: colors.$text-primary-dark; 
+      }
+  
+      input {
+        border-color: colors.$input-border-primary-dark;
+        color: colors.$input-text-primary-dark;
+  
+        &:focus {
+          border-color: colors.$input-border-primary-selected-dark;
+        }
+      }
+    }
+  } 
+
+  .remember_option {
+    span {
+      color: colors.$text-primary-dark;
+    }
+  }
+
+  .login_button {
+    @include mixins.buttonStylePrimaryDark();
+  }
+
+  .register_link_box {
+    color: colors.$text-primary-dark;
+
+    .link {
+      color: colors.$text-primary-highlighted-dark;
     }
   }
 }

@@ -19,6 +19,7 @@
 .refresh_button {
   @include mixins.buttonStylePrimary();
   padding: 8px 10px;
+  font-weight: 500;
 }
 
 .alert_message {
@@ -37,5 +38,16 @@
     img {
       width: 100%;
     }
+  }
+}
+
+// Dark theme
+.random_dog[data-theme="dark"] {
+  .title {
+    color: colors.$text-primary-dark;
+  }
+  
+  .refresh_button {
+    @include mixins.buttonStylePrimaryDark();
   }
 }

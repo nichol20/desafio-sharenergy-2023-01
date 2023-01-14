@@ -9,12 +9,12 @@
   left: 0;
   width: 100%;
   min-height: 100vh;
-  background: colors.$medium-shadow;
+  background-color: colors.$medium-shadow;
   @include mixins.displayFlex();
 
   .warning_container {
     padding: 20px;
-    background: colors.$modal-bg-primary;
+    background-color: colors.$modal-bg-primary;
     border-radius: 20px;
     @include mixins.displayFlex();
     flex-direction: column;
@@ -22,10 +22,12 @@
 
     h2 {
       font-size: 1.5em;
+      color: colors.$modal-text-primary;
     }
 
     span {
       font-size: 1em;
+      color: colors.$modal-text-primary;
     }
   }
 
@@ -57,6 +59,33 @@
 
     &:hover {
       background-color: colors.$button-bg-primary-hovered;
+    }
+  }
+}
+
+// Dark theme
+.confirmation_modal[data-them="dark"] {
+  .warning_container {
+    background-color: colors.$modal-bg-primary-dark;
+
+    h2 {
+      color: colors.$modal-text-primary-dark;
+    }
+
+    span {
+      color: colors.$modal-text-primary-dark;
+    }
+  }
+
+  button {
+    color: colors.$button-text-primary-dark;
+  }
+
+  button.delete {
+    background-color: colors.$button-bg-primary-dark;
+
+    &:hover {
+      background-color: colors.$button-bg-primary-hovered-dark;
     }
   }
 }

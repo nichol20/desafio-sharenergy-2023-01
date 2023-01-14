@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import axios, { AxiosResponse } from 'axios'
 
@@ -9,11 +9,15 @@ import { randomUserApiUrl } from '../../data/randomUser'
 
 import styles from './style.module.scss'
 import { lowerCase } from '../../utils/functions'
+import { ToastContainer, ToastRef } from '../ToastContainer'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 const numberOfPeoplePerPage = 10
 const initialApiUrl = `${randomUserApiUrl}?results=500`
 
 export const RandomUsersPage = () => {
+  const { theme } = useContext(ThemeContext)
+
   const [ searchParams, setSearchParams ] = useSearchParams();
   const [ searchValue, setSearchValue ] = useState(searchParams.get('search') || '')
   const debouncedSearchValue = useDebounce(searchValue, 300)
@@ -24,6 +28,8 @@ export const RandomUsersPage = () => {
   const pageParam = parseInt(searchParams.get('page') || '1')
   const currentPage = isNaN(pageParam) ? 1 : pageParam
   const lastPage = Math.ceil(filteredUsers.length / numberOfPeoplePerPage)
+
+  const toastRef = useRef<ToastRef>(null)
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +42,7 @@ export const RandomUsersPage = () => {
       setUsers(response.data.results)
       setFilteredUsers(response.data.results)
     } catch (error) {
-      console.log(error)
+      toastRef.current?.toast('Não foi possível buscar os usuários', 'Erro na busca', 'error')
     }
   }
 
@@ -53,7 +59,7 @@ export const RandomUsersPage = () => {
   }
 
   useEffect(() => {
-    // fetchUsers()
+    fetchUsers()
   }, [])
 
   useEffect(() => {
@@ -67,7 +73,7 @@ export const RandomUsersPage = () => {
   }, [debouncedSearchValue])
 
   return (
-    <div className={styles.random_users}>
+    <div className={styles.random_users} data-theme={theme}>
       <SearchInput
        onChange={handleInputChange} 
        placeholder='encontre alguém...' 
@@ -115,6 +121,7 @@ export const RandomUsersPage = () => {
         </div>
       </div>
       <Pagination baseUrl='/' currentPage={currentPage} lastPage={lastPage} />
+      <ToastContainer ref={toastRef} />
     </div>
   )
 }

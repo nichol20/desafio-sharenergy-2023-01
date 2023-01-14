@@ -35,3 +35,17 @@
     }
   }
 }
+
+
+// Dark theme
+.cat_api[data-theme="dark"] {
+  .field {
+    label {
+      color: colors.$text-primary-dark;
+    }
+  
+    .error_message {
+      color: colors.$text-primary-dark;
+    }
+  }
+}

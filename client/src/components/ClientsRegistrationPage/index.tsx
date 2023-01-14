@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { http } from '../../utils/http'
@@ -14,6 +14,8 @@ import { ClientModal } from './ClientModal'
 
 import { addIcon, personIcon } from '../../assets'
 import styles from './style.module.scss'
+import { ToastContainer, ToastRef } from '../ToastContainer'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 type CurrentClient = Client | Omit<Client, "id" | "created_at">
 
@@ -21,6 +23,7 @@ const numberOfPeoplePerPage = 12
 
 export const ClientsRegistrationPage = () => {
   const { user } = useContext(AuthContext)
+  const { theme } = useContext(ThemeContext)
 
   const [ clients, setClients ] = useState<Client[]>(user!.clientList)
   const [ filteredClients, setFilteredClients ] = useState<Client[]>(user!.clientList)
@@ -43,6 +46,8 @@ export const ClientsRegistrationPage = () => {
     phone: '',
     icon: ''
   })
+
+  const toastRef = useRef<ToastRef>(null)
 
   const openModal = () => {
     setShowModal(true)
@@ -76,7 +81,7 @@ export const ClientsRegistrationPage = () => {
       setClients(data)
       setFilteredClients(data)
     } catch (error) {
-      
+      toastRef.current?.toast('Não foi possível buscar seus clients', 'Erro na busca', 'error')
     }
   }
 
@@ -109,13 +114,17 @@ export const ClientsRegistrationPage = () => {
     setFilteredClients(filtered)
   }
 
+  useEffect(() => {
+    refreshClients()
+  }, [])
+
   // triggers the function after a while that the user stops typing
   useEffect(() => {
     filterClients()
   }, [debouncedSearchValue])
 
   return (
-    <div className={styles.clients_registration}>
+    <div className={styles.clients_registration} data-theme={theme}>
       <SearchInput
        onChange={handleSearchInputuChange} 
        placeholder='encontre alguém...' 
@@ -138,7 +147,7 @@ export const ClientsRegistrationPage = () => {
                key={index}
               >
                 <div className={styles.img_box}>
-                  <img src={personIcon} alt="person" />
+                  <img src={client.icon || personIcon} alt="person" />
                 </div>
                 <div className={styles.profile}>
                   <h4 className={styles.name}>
@@ -166,6 +175,7 @@ export const ClientsRegistrationPage = () => {
          refreshClients={refreshClients}
         /> 
       }
+      <ToastContainer ref={toastRef} />
     </div>
   )
 }

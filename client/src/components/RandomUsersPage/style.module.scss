@@ -41,6 +41,7 @@
 
 .table_heading {
   @include tableDisplayGrid();
+  color: colors.$text-primary;
 
   .column {
     font-size: 1.2em;
@@ -125,6 +126,33 @@
 
     .age {
       justify-content: center;
+    }
+  }
+}
+
+// Dark theme
+.random_users[data-theme="dark"] {
+  .table_heading {
+    color: colors.$text-primary-dark;
+  }
+
+  .list {
+    .row {
+      @include tableDisplayGrid();
+      color: colors.$text-secondary-dark;
+      
+      .column {
+        border-color: colors.$input-border-primary-dark;
+      }
+      
+      .profile {
+        .info {
+          .username {
+            color: colors.$text-primary-highlighted-dark;
+  
+          }
+        }
+      }
     }
   }
 }

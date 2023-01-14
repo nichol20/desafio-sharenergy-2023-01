@@ -1,13 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { AuthContext } from '../../contexts/AuthContext'
+import { ThemeContext } from '../../contexts/ThemeContext'
 import { useDebounce } from '../../hooks/useDebounce'
 import { http } from '../../utils/http'
+import { ToastContainer, ToastRef } from '../ToastContainer'
 
 import styles from './style.module.scss'
 
 export const RegisterPage = () => {
+  const { theme } = useContext(ThemeContext)
   const [ username, setUsername ] = useState('')
   const debouncedSearchValue = useDebounce(username, 300)
   const [ usernameExistsError, setUsernameExistsError ]= useState(false)
@@ -18,6 +21,7 @@ export const RegisterPage = () => {
   const navigate = useNavigate()
   const confirmPasswordDoesNotMatch =
    password !== confirmPassword && password.length > 0 && confirmPassword.length > 0
+  const toastRef = useRef<ToastRef>(null)
 
   
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -40,9 +44,7 @@ export const RegisterPage = () => {
     try {
       await signUp(username, password)
     } catch (error: any) {
-      if(error.response.data.message === 'User already exists') {
-        setUsernameExistsError(true)
-      }
+      toastRef.current?.toast('Algo deu errado', 'Erro', 'error')
     }
   }
 
@@ -80,7 +82,7 @@ export const RegisterPage = () => {
   }, [ user ])
 
   return (
-    <div className={styles.register_page}>
+    <div className={styles.register_page} data-theme={theme}>
       <form className={styles.register_interface} onSubmit={handleSubmit}>
         <div className={styles.field}>
           <label htmlFor="username">Usuário</label>
@@ -124,6 +126,7 @@ export const RegisterPage = () => {
           <Link to='/login' className={styles.link} >login</Link>
         </span>
       </form>
+      <ToastContainer ref={toastRef} />
     </div>
   )
 }

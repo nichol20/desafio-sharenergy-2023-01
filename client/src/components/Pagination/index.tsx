@@ -1,6 +1,8 @@
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { chevronForwardIcon } from '../../assets'
+import { ThemeContext } from '../../contexts/ThemeContext'
 import styles from './style.module.scss'
 
 interface PaginationProps {
@@ -10,6 +12,7 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) => {
+  const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const isTherePreviousPage = currentPage - 1 >= 1
   const isThereNextPage = currentPage < lastPage
@@ -18,7 +21,7 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
   if(isThereOnlyOnePage) return null
 
   return (
-    <ul className={styles.pagination}>
+    <ul className={styles.pagination} data-theme={theme}>
       {
         isTherePreviousPage && (
           <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage - 1}`)}>

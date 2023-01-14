@@ -1,7 +1,7 @@
 
-import { useState } from 'react'
+import { useContext } from 'react'
 import { closeIcon } from '../../assets'
-import { SearchInput } from '../SearchInput'
+import { ThemeContext } from '../../contexts/ThemeContext'
 import styles from './style.module.scss'
 
 interface ItemsPicker {
@@ -11,8 +11,10 @@ interface ItemsPicker {
 }
 
 export const IconsPicker = ({ onIconClick, onClose, icons }: ItemsPicker) => {
+  const { theme } = useContext(ThemeContext)
+
   return (
-    <div className={styles.icons_picker}>
+    <div className={styles.icons_picker} data-theme={theme}>
       <div className={styles.responsive_box_relative}>
         <div className={styles.responsive_box_absolute}>
           <div className={styles.modal}>

@@ -32,7 +32,7 @@
   position: relative;
   overflow: hidden;
   user-select: none;
-  background: #fff;
+  background-color: colors.$modal-bg-primary;
   box-shadow: colors.$light-shadow;
   @include mixins.displayFlex(flex-start, flex-start);
   gap: 10px;
@@ -45,6 +45,10 @@
   .img_box {
     width: 60px;
     height: 60px;
+
+    img {
+      width: 100%
+    }
   }
 
   .profile {
@@ -74,17 +78,45 @@
   height: 65px;
   padding: 10px;
   border-radius: 100%;
-  background: colors.$button-bg-primary;
+  background-color: colors.$button-bg-primary;
   cursor: pointer;
   transition: .3s;
   border: none;
   
   &:hover {
-    background: colors.$button-bg-primary-hovered;
+    background-color: colors.$button-bg-primary-hovered;
   }
 
   img {
     @include mixins.whiteFilter();
+  }
+}
+
+// Dark Theme
+.clients_registration[data-theme="dark"] {
+  .client_card {
+    background-color: colors.$modal-bg-primary-dark;
+
+    .profile {
+      .name {
+        color: colors.$text-primary-highlighted-dark;
+      }
+  
+      .email {
+        color: colors.$text-secondary-dark;
+      }
+    }
+  }
+  .add_button {
+    background-color: colors.$button-bg-primary-dark;
+    
+    &:hover {
+      background-color: colors.$button-bg-primary-hovered-dark;
+    }
+  
+    img {
+      @include mixins.whiteFilter();
+    }
   }
 }
 
@@ -125,7 +157,7 @@
 
 .form {
   position: relative;
-  background: #fff;
+  background: colors.$modal-bg-primary;
   width: 400px;
   @include mixins.displayFlex();
   flex-direction: column;
@@ -150,7 +182,7 @@
     }
   }
 
-  .img_box {
+  .person_icon_box {
     width: 100px;
     height: 100px;
     position: relative;
@@ -164,7 +196,7 @@
       border: none;
       bottom: 0px;
       right: 0px;
-      margin: 10px;
+      margin: 8px;
       background-color: colors.$modal-bg-primary;
       cursor: pointer;
     }
@@ -177,6 +209,7 @@
       text-align: center;
       font-size: 1em;
       margin-bottom: 4px;
+      color: colors.$modal-text-primary;
     }
 
     input {
@@ -186,6 +219,8 @@
       outline: none;
       border: 1px solid colors.$input-border-primary;
       border-radius: 4px;
+      background-color: colors.$input-bg-primary;
+      color: colors.$input-text-primary;
 
       &:focus {
         border-color: colors.$input-border-primary-selected;
@@ -217,6 +252,57 @@
 
     .button.delete {
       background-color: colors.$button-bg-close;
+    }
+  }
+}
+
+// Dark theme
+.client_modal[data-theme="dark"] {
+  .form {
+    background-color: colors.$modal-bg-primary-dark;
+    
+    .close_button {
+      img {
+        @include mixins.whiteFilter();
+      }
+    }
+  
+    .person_icon_box {
+      .change_person_icon_button {
+        background-color: colors.$modal-bg-primary-dark;
+
+        img {
+          @include mixins.whiteFilter();
+        }
+      }
+    }
+  
+    .field {
+      .title {
+        color: colors.$modal-text-primary-dark;
+      }
+
+      input {
+        border: 1px solid colors.$input-border-primary-dark;
+        background-color: colors.$input-bg-primary-dark;
+        color: colors.$input-text-primary-dark;
+  
+        &:focus {
+          border-color: colors.$input-border-primary-selected-dark;
+        }
+      }
+    }
+  
+    .options {
+      .button {
+        img {
+          @include mixins.whiteFilter();
+        }
+      }
+  
+      .button.edit {
+        background-color: colors.$button-bg-primary-dark;
+      }
     }
   }
 }

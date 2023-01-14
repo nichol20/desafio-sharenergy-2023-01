@@ -2,14 +2,18 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { AuthContext } from '../../contexts/AuthContext'
+import { ThemeContext } from '../../contexts/ThemeContext'
 import { UserCookieController } from '../../utils/cookies'
+import { CustomCheckbox } from '../CustomCheckbox'
 
 import styles from './style.module.scss'
 
 export const LoginPage = () => {
+  const { theme } = useContext(ThemeContext)
   const { login, user } = useContext(AuthContext)
   const [ emptyFieldError, setEmptyFieldError ] = useState(false)
   const [ invalidCredentials, setInvalidCredentials ] = useState(false)
+  const [ remember, setRemember ] = useState(false)
   const navigate = useNavigate()
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,11 +36,10 @@ export const LoginPage = () => {
 
     const username = formData.get('username') as string
     const password = formData.get('password') as string
-    const isToRemember = !!formData.get('remember')
 
     try {
       await login(username, password)
-      if(isToRemember) UserCookieController.set(username, password)
+      if(remember) UserCookieController.set(username, password)
     } catch (error: any) {
       if(error.response?.data?.message === 'User not found') {
         setInvalidCredentials(true)
@@ -50,7 +53,7 @@ export const LoginPage = () => {
   }, [ user ])
 
   return (
-    <div className={styles.login_page}>
+    <div className={styles.login_page} data-theme={theme} >
       <h1 className={styles.title}>DESAFIO SHARENERGY</h1>
       <form className={styles.login_interface} onSubmit={handleSubmit}>
         <div className={styles.field}>
@@ -68,10 +71,7 @@ export const LoginPage = () => {
           <span className={styles.error_message}>Credenciais inválidas</span>
         )}
         <div className={styles.remember_option}>
-          <label className={styles.checkbox_container}>
-            <input type="checkbox" name='remember'/>
-            <span className={styles.checkmark}></span>
-          </label>
+          <CustomCheckbox onChange={event => setRemember(event.target.checked)} />
           <span>Remember me</span>
         </div>
         <button className={styles.login_button} type='submit'>Login</button>

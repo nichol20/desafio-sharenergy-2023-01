@@ -11,86 +11,140 @@ $close-icon: '../../assets/close.svg';
   background-color: colors.$main-bg;
   @include mixins.displayFlex(flex-start);
   position: relative;
-
+  transition: 150ms background ease-in-out;
+  
   @include media("desktop") {
     padding: 5px 10px; 
   }
+}
+
+.logo {
+  font-size: 1.5em;
+  color: colors.$text-primary;
+
+  @include media("desktop") {
+    font-size: 1.2em;
+  }
+}
+
+.nav_bar {
+  @include mixins.displayFlex();
+  margin-left: auto;
+
+  .toggle_menu {
+    position: fixed;
+    right: 14px;
+    top: 7px;
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: url($menu-icon);
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1001;
+    display: none;
+    cursor: pointer;
+
+    &.active {
+      background: url($close-icon);
+    }
+
+    &.active ~ .nav_list {
+      display: flex;
+    }
+
+    @include media("tablet") {
+      display: block;
+    }
+  }
+  
+  .nav_list {
+    @include mixins.displayFlex();
+    gap: 20px;
+    list-style: none;
+    font-weight: 500;
+
+    @include media("tablet") {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      flex-direction: column;
+      background-color: colors.$main-bg;
+      font-size: 1.5em;
+      z-index: 1000;
+    }
+
+    .nav_item {
+      white-space: nowrap;
+
+      .link {
+        cursor: pointer;
+        border-bottom: 1px solid transparent;
+        transition: .3s;
+        text-decoration: none;
+        color: colors.$text-primary;
+
+        &:hover {
+          color: colors.$text-primary-highlighted;
+        }
+
+        @include media("desktop") {
+          font-size: .875em;
+        }
+      }
+    }
+
+    .logout_button {
+      width: 25px;
+      height: 25px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+
+// Dark theme
+.header[data-theme="dark"] {
+  background-color: colors.$main-bg-dark;
 
   .logo {
-    font-size: 1.5em;
-    color: colors.$text-primary;
-
-    @include media("desktop") {
-      font-size: 1.2em;
-    }
+    color: colors.$text-primary-dark;
   }
 
   .nav_bar {
-    @include mixins.displayFlex();
-    margin-left: auto;
-
     .toggle_menu {
-      position: fixed;
-      right: 14px;
-      top: 7px;
-      width: 35px;
-      height: 35px;
-      border: none;
-      background: url($menu-icon);
-      background-repeat: no-repeat;
-      background-position: center;
-      z-index: 1001;
-      display: none;
-  
-      &.active {
-        background: url($close-icon);
-      }
-  
-      &.active ~ .nav_list {
-        display: flex;
-      }
-  
-      @include media("tablet") {
-        display: block;
-      }
+      @include mixins.whiteFilter();
     }
     
     .nav_list {
-      @include mixins.displayFlex();
-      gap: 20px;
-      list-style: none;
-      font-weight: 500;
 
       @include media("tablet") {
-        display: none;
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100vh;
-        flex-direction: column;
-        background-color: colors.$main-bg;
-        font-size: 1.5em;
-        z-index: 1000;
+        background-color: colors.$main-bg-dark;
       }
 
       .nav_item {
-        white-space: nowrap;
-
         .link {
-          cursor: pointer;
-          border-bottom: 1px solid transparent;
-          transition: .3s;
-          text-decoration: none;
-          color: colors.$text-primary;
+          color: colors.$text-primary-dark;
 
           &:hover {
-            color: colors.$text-primary-highlighted;
+            color: colors.$text-primary-highlighted-dark;
           }
+        }
+      }
 
-          @include media("desktop") {
-            font-size: .875em;
-          }
+      .logout_button {
+        img {
+          @include mixins.whiteFilter();
         }
       }
     }

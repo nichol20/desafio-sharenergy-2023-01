@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
 import styles from './style.module.scss'
 
@@ -9,9 +10,10 @@ interface ConfirmationModalProps {
 }
 
 export const ConfirmationModal = ({ onCancel, onDelete, message }: ConfirmationModalProps) => {
+  const { theme } = useContext(ThemeContext)
 
   return (
-    <div className={styles.confirmation_modal}>
+    <div className={styles.confirmation_modal} data-theme={theme}>
       <div className={styles.warning_container}>
         <h2>Você tem certeza?</h2>
         <span>{message}</span>
