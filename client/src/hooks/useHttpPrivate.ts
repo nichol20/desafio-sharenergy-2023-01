@@ -44,5 +44,5 @@ export const useHttpPrivate: UseHttpPrivate = () => {
         }
     }, [user, refresh])
 
-    return http;
+    return http
 }

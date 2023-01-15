@@ -1,7 +1,5 @@
 import { AxiosResponse } from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie'
 
 import { Login, LoginResponse, SignOut, SignUp, CreateUserResponse, GetNewAccessTokenResponse, GetProfileResponse, Refresh } from "../types/auth";
 import { User } from "../types/user";
@@ -92,7 +90,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     !user?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, [])
 
-  // await 
+  // wait until refresh token check 
   if(isLoading) return <>Loading...</>
 
   return (

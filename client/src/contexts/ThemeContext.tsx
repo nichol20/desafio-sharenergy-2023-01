@@ -12,11 +12,15 @@ interface ThemeProviderProps {
 export const ThemeContext = createContext({} as ThemeContext)
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [ theme, setTheme ] = useState<ThemeContext["theme"]>('light')
+  const [ theme, setTheme ] = useState<ThemeContext["theme"]>(
+    localStorage.getItem('theme') === "dark" ? "dark" : "light"
+  )
 
   const toggleTheme = () => {
     setTheme(current => {
-      return current === 'light' ? 'dark' : 'light'
+      const newTheme = current === 'light' ? 'dark' : 'light'
+      localStorage.setItem('theme', newTheme)
+      return newTheme
     })
   }
 
