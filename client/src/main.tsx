@@ -9,7 +9,8 @@ import {
   HttpCatPage, 
   RandomDogPage, 
   ClientsRegistrationPage, 
-  RegisterPage 
+  RegisterPage,
+  NotFoundPage
 } from './components'
 
 import './styles/global.scss'
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: '/',

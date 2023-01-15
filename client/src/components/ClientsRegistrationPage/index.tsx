@@ -10,7 +10,7 @@ import { Client } from '../../types/user'
 
 import { lowerCase } from '../../utils/functions'
 import { Pagination, SearchInput, IconsPicker, HighlightableText } from '..'
-import { ClientModal } from './ClientModal'
+import { ClientModal } from '../ClientModal'
 
 import { addIcon, personIcon } from '../../assets'
 import styles from './style.module.scss'

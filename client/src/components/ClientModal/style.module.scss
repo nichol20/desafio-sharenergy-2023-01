@@ -1,0 +1,183 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.client_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100%;
+  transition: .3s ease-out;
+  opacity: 1;
+  background: colors.$medium-shadow;
+  z-index: 1002;
+}
+
+.responsive_box_relative {
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  min-height: 100vh;
+
+  .responsive_box_absolute {
+    position: absolute;
+    top: 16px;
+    width: 100%;
+    @include mixins.displayFlex();
+    
+  }
+}
+
+
+.form {
+  position: relative;
+  background: colors.$modal-bg-primary;
+  width: 400px;
+  @include mixins.displayFlex();
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 8px;
+  padding: 20px;
+  
+  .close_button {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: none;
+    background-color: colors.$button-bg-close;
+    padding: 4px;
+    cursor: pointer;
+
+    img {
+      @include mixins.whiteFilter();
+    }
+  }
+
+  .person_icon_box {
+    width: 100px;
+    height: 100px;
+    position: relative;
+
+    .change_person_icon_button {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      padding: 5px;
+      border-radius: 100%;
+      border: none;
+      bottom: 0px;
+      right: 0px;
+      margin: 8px;
+      background-color: colors.$modal-bg-primary;
+      cursor: pointer;
+    }
+  }
+
+  .field {
+    width: 100%;
+
+    .title {
+      text-align: center;
+      font-size: 1em;
+      margin-bottom: 4px;
+      color: colors.$modal-text-primary;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px 10px;
+      font-size: 1em;
+      outline: none;
+      border: 1px solid colors.$input-border-primary;
+      border-radius: 4px;
+      background-color: colors.$input-bg-primary;
+      color: colors.$input-text-primary;
+
+      &:focus {
+        border-color: colors.$input-border-primary-selected;
+      }
+    }
+  }
+
+  .options {
+    @include mixins.displayFlex(space-around);
+    width: 100%;
+
+    .button {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+
+      img {
+        @include mixins.whiteFilter();
+        width: 100%;
+      }
+    }
+
+    .button.edit {
+      background-color: colors.$button-bg-primary;
+    }
+
+    .button.delete {
+      background-color: colors.$button-bg-close;
+    }
+  }
+}
+
+// Dark theme
+.client_modal[data-theme="dark"] {
+  .form {
+    background-color: colors.$modal-bg-primary-dark;
+    
+    .close_button {
+      img {
+        @include mixins.whiteFilter();
+      }
+    }
+  
+    .person_icon_box {
+      .change_person_icon_button {
+        background-color: colors.$modal-bg-primary-dark;
+
+        img {
+          @include mixins.whiteFilter();
+        }
+      }
+    }
+  
+    .field {
+      .title {
+        color: colors.$modal-text-primary-dark;
+      }
+
+      input {
+        border: 1px solid colors.$input-border-primary-dark;
+        background-color: colors.$input-bg-primary-dark;
+        color: colors.$input-text-primary-dark;
+  
+        &:focus {
+          border-color: colors.$input-border-primary-selected-dark;
+        }
+      }
+    }
+  
+    .options {
+      .button {
+        img {
+          @include mixins.whiteFilter();
+        }
+      }
+  
+      .button.edit {
+        background-color: colors.$button-bg-primary-dark;
+      }
+    }
+  }
+}

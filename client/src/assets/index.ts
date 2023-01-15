@@ -14,5 +14,6 @@ export { default as sunIcon } from './sun.svg'
 
 export { default as notFoundImg } from './not-found-cat.png'
 export { default as catHoldingSearchSignImg } from './cat-holding-search-sign.png'
+export { default as notFoundComputerImg } from './404.png'
 
 export { default as loadingDogGif } from './loading-dog.gif'

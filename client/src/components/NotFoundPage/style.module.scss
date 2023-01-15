@@ -1,0 +1,16 @@
+@use '../../styles/colors'; 
+@use '../../styles/mixins'; 
+@use '../../styles/medias' as *;
+
+.error_page {
+  @include mixins.displayFlex();
+  min-height: 100vh;
+}
+
+.content {
+  @include mixins.displayFlex();
+  flex-direction: column;
+  max-width: 256px;
+  width: 100%;
+  text-align: center;
+}
