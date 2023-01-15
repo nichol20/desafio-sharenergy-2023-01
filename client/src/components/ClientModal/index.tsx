@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 
 import { http } from '../../utils/http'
-import { AccessTokenCookieController } from '../../utils/cookies'
 import { Client } from '../../types/user'
 import { ConfirmationModal, IconsPicker, ToastContainer } from '../'
 import { ToastRef } from '../ToastContainer'
@@ -9,6 +8,7 @@ import { ToastRef } from '../ToastContainer'
 import { checkmarkIcon, closeIcon, pencilIcon, personIcon, trashIcon } from '../../assets'
 import styles from './style.module.scss'
 import { ThemeContext } from '../../contexts/ThemeContext'
+import { useHttpPrivate } from '../../hooks/useHttpPrivate'
 
 interface ClientModalProps {
   onClose: () => void
@@ -19,6 +19,7 @@ interface ClientModalProps {
 
 export const ClientModal = ({ onClose, type, client, refreshClients }: ClientModalProps) => {
   const { theme } = useContext(ThemeContext)
+  const httpPrivate = useHttpPrivate()
 
   const submitIcon = type === 'edit' ? pencilIcon : checkmarkIcon
   const [ newClient, setNewClient ] = useState(client)
@@ -30,13 +31,9 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
 
   const createClient = async () => {
     try {
-       await http.post('/clients', {
+       await httpPrivate.post('/clients', {
         ...newClient,
         icon: currentIcon === personIcon ? '' : currentIcon
-      }, {
-        headers: {
-          Authorization: `Bearer ${AccessTokenCookieController.get()}`
-        }
       })
       await refreshClients()
       onClose()
@@ -47,13 +44,9 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
 
   const updateClient = async () => {
     try {
-      await http.patch(`/clients/${(client as Client).id}`, { 
+      await httpPrivate.patch(`/clients/${(client as Client).id}`, { 
         ...newClient,
         icon: currentIcon === personIcon ? '' : currentIcon
-      }, {
-        headers: {
-          Authorization: `Bearer ${AccessTokenCookieController.get()}`
-        }
       })
       await refreshClients()
       onClose()
@@ -64,11 +57,7 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
 
   const deleteClient = async () => {
     try {
-      await http.delete(`/clients/${(client as Client).id}`, {
-        headers: {
-          Authorization: `Bearer ${AccessTokenCookieController.get()}`
-        }
-      })
+      await httpPrivate.delete(`/clients/${(client as Client).id}`)
       await refreshClients()
       onClose()
     } catch (error) {
@@ -115,11 +104,7 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
   useEffect(() => {
     const fetchIcons = async () => {
       try {
-        const { data } = await http.get('/images/client-icons', {
-          headers: {
-            Authorization: `Bearer ${AccessTokenCookieController.get()}`
-          }
-        })
+        const { data } = await httpPrivate.get('/images/client-icons')
         
         setIcons([personIcon, ...data])
       } catch (error) {

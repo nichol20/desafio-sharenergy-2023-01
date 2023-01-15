@@ -9,7 +9,7 @@
   align-items: center;
 
   @include media("tablet") {
-    grid-template-columns: 280px 260px minmax(80px, 1fr);
+    grid-template-columns: 330px 260px minmax(80px, 1fr);
   }
 }
 

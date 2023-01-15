@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { AuthContext } from '../../contexts/AuthContext'
 import { ThemeContext } from '../../contexts/ThemeContext'
-import { UserCookieController } from '../../utils/cookies'
+import { useHttpPrivate } from '../../hooks/useHttpPrivate'
 import { CustomCheckbox } from '../CustomCheckbox'
+import { ToastContainer, ToastRef } from '../ToastContainer'
 
 import styles from './style.module.scss'
 
@@ -14,7 +15,12 @@ export const LoginPage = () => {
   const [ emptyFieldError, setEmptyFieldError ] = useState(false)
   const [ invalidCredentials, setInvalidCredentials ] = useState(false)
   const [ remember, setRemember ] = useState(false)
+
+  const toastRef = useRef<ToastRef>(null)
+
   const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/"
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmptyFieldError(false)
@@ -38,18 +44,20 @@ export const LoginPage = () => {
     const password = formData.get('password') as string
 
     try {
-      await login(username, password)
-      if(remember) UserCookieController.set(username, password)
+      await login(username, password, remember)
     } catch (error: any) {
       if(error.response?.data?.message === 'User not found') {
         setInvalidCredentials(true)
+        return
       }
+
+      toastRef.current?.toast('Algo deu errado', 'erro no login', 'error')
     }
 
   }
 
   useEffect(() => {
-    if(user) navigate('/')
+    if(user) navigate(from, { replace: true })
   }, [ user ])
 
   return (
@@ -80,6 +88,7 @@ export const LoginPage = () => {
           <Link to='/register' className={styles.link} >registre-se</Link>
         </span>
       </form>
+      <ToastContainer ref={toastRef}/>
     </div>
   )
 }

@@ -26,7 +26,7 @@
 }
 
 // Dark theme
-.search_box {
+.search_box[data-theme="dark"] {
   background-color: colors.$input-bg-primary-dark;
   border: 1px solid colors.$input-border-primary-dark;
 

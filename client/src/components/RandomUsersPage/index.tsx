@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import axios, { AxiosResponse } from 'axios'
 
 import { SearchInput, Pagination, HighlightableText } from '../'

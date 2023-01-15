@@ -1,5 +1,6 @@
 export interface User {
   username:   string
+  accessToken?: string | undefined
   clientList: Client[]
 }
 

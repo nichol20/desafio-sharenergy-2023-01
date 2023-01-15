@@ -1,10 +1,8 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import { http } from '../../utils/http'
 import { AuthContext } from '../../contexts/AuthContext'
 import { useDebounce } from '../../hooks/useDebounce'
-import { AccessTokenCookieController } from '../../utils/cookies'
 
 import { Client } from '../../types/user'
 
@@ -16,6 +14,7 @@ import { addIcon, personIcon } from '../../assets'
 import styles from './style.module.scss'
 import { ToastContainer, ToastRef } from '../ToastContainer'
 import { ThemeContext } from '../../contexts/ThemeContext'
+import { useHttpPrivate } from '../../hooks/useHttpPrivate'
 
 type CurrentClient = Client | Omit<Client, "id" | "created_at">
 
@@ -24,6 +23,7 @@ const numberOfPeoplePerPage = 12
 export const ClientsRegistrationPage = () => {
   const { user } = useContext(AuthContext)
   const { theme } = useContext(ThemeContext)
+  const httpPrivate = useHttpPrivate()
 
   const [ clients, setClients ] = useState<Client[]>(user!.clientList)
   const [ filteredClients, setFilteredClients ] = useState<Client[]>(user!.clientList)
@@ -73,15 +73,13 @@ export const ClientsRegistrationPage = () => {
 
   const refreshClients = async () => {
     try {
-      const { data } = await http.get('/clients', {
-        headers: {
-          Authorization: `Bearer ${AccessTokenCookieController.get()}`
-        }
-      })
+      const { data } = await httpPrivate.get('/clients')
       setClients(data)
       setFilteredClients(data)
     } catch (error) {
-      toastRef.current?.toast('Não foi possível buscar seus clients', 'Erro na busca', 'error')
+      if(filterClients.length < 0) {
+        toastRef.current?.toast('Não foi possível buscar seus clients', 'Erro na busca', 'error')
+      }
     }
   }
 

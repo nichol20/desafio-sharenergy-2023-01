@@ -1,14 +1,15 @@
 import { AxiosResponse } from "axios";
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie'
 
-import { Login, LoginResponse, SignOut, SignUp, CreateUserResponse, GetNewAccessTokenResponse, GetProfileResponse } from "../types/auth";
+import { Login, LoginResponse, SignOut, SignUp, CreateUserResponse, GetNewAccessTokenResponse, GetProfileResponse, Refresh } from "../types/auth";
 import { User } from "../types/user";
-import { AccessTokenCookieController, UserCookieController, RefreshTokenCookieController } from "../utils/cookies";
 import { http } from "../utils/http";
 
 interface AuthContext {
   user: User | null
+  refresh: Refresh
   login: Login,
   signUp: SignUp,
   signOut: SignOut
@@ -22,16 +23,36 @@ export const AuthContext = createContext({} as AuthContext)
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [ user, setUser ] = useState<User | null>(null)
-  const navigate = useNavigate()
+  const [ isLoading, setIsLoading ] = useState(true)
 
-  const login: Login = async (username, password) => {
-    const { data }: AxiosResponse<LoginResponse> = await http.post('/login', {
-      username,
-      password
+  const refresh = async () => {
+    const refreshTokenResponse: AxiosResponse<GetNewAccessTokenResponse> = await http.get('/refresh-token', {
+        withCredentials: true
+    })
+    const profileResponse: AxiosResponse<GetProfileResponse> = await http.get('/users/profile', {
+      headers: {
+        Authorization: `Bearer ${refreshTokenResponse.data.accessToken}`
+      }
     })
 
-    AccessTokenCookieController.set(data.accessToken)
-    RefreshTokenCookieController.set(data.refreshToken)
+    setUser({...profileResponse.data, accessToken: refreshTokenResponse.data.accessToken })
+    return refreshTokenResponse.data.accessToken
+}
+
+  const login: Login = async (username, password, remember) => {
+    const { data }: AxiosResponse<LoginResponse> = await http.post('/login', 
+    { username, password }, {
+      withCredentials: true
+    })
+
+    if(remember) {
+      // the backend will send a cookie with a duration of 30d
+      await http.get('/remember', {
+        headers: { Authorization: `Bearer ${data.accessToken}` },
+        withCredentials: true
+      })
+    }
+
     setUser(data.user)
   }
 
@@ -39,97 +60,43 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const { data }: AxiosResponse<CreateUserResponse> = await http.post('/users', {
       username,
       password
-    })
+    },{ withCredentials: true })
 
-    AccessTokenCookieController.set(data.accessToken)
-    RefreshTokenCookieController.set(data.refreshToken)
     setUser(data.user)
   }
 
   const signOut: SignOut = async () => {
-    RefreshTokenCookieController.remove()
-    AccessTokenCookieController.remove()
-    UserCookieController.remove()
-  }
-
-  // Get user information with access token
-  const fetchUser = async (token: string) => {
-    const { data }: AxiosResponse<GetProfileResponse> = await http.get('/users/profile', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-
-    return data
-  }
-
-  const autoLogin = async () => {
-    // try to log in first with the username and password saved in cookies (if any)
-    const user = UserCookieController.get()
-    if(user) {
-      try {
-        await login(user.username, user.password)
-        return
-      } catch (error) {
-        UserCookieController.remove()
-      }
+    setUser(null)
+    try {
+        await http.get('/logout', { withCredentials: true })
+    } catch (err) {
+        console.error(err)
     }
-
-    // second try to get an access token with the refresh token
-    const refreshToken = RefreshTokenCookieController.get()
-    if(refreshToken) {
-      try {
-        const { data }: AxiosResponse<GetNewAccessTokenResponse> = await http.post('/refresh-token', { refreshToken })
-        // if successful fetch the user using the access token and replace tokens in cookies
-        RefreshTokenCookieController.set(data.refreshToken)
-        AccessTokenCookieController.set(data.accessToken)
-        const user = await fetchUser(data.accessToken)
-        setUser(user)
-        return
-      } catch (error) {
-        RefreshTokenCookieController.remove()
-        throw error
-      }
-    }
-
-    navigate('/login')
   }
 
+  // Persist login
   useEffect(() => {
-    const handleAuth = async () => {
-      const accessToken = AccessTokenCookieController.get()
-      const refreshToken = RefreshTokenCookieController.get()
-
-      // if it has a refresh token, reset the access token
-      // if doesn't have an access token saved in cookies then try automatic login
-      if(refreshToken || !accessToken) {
+    const verifyRefreshToken = async () => {
         try {
-          await autoLogin()
-        } catch (error) {
-          navigate('/login')
+            await refresh()
         }
-        return
-      }
-        
-      try {
-        const user = await fetchUser(accessToken)
-        setUser(user)
-      } catch (error) {
-        AccessTokenCookieController.remove()
-        // if access token is changed or expired, try automatic login
-        try {
-          await autoLogin()
-        } catch (error) {
-          navigate('/login')
+        catch (err) {
+            console.error(err)
         }
-      }
+        finally {
+            setIsLoading(false);
+        }
     }
 
-    handleAuth()
+    // Avoids unwanted call to verifyRefreshToken
+    !user?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, [])
 
+  // await 
+  if(isLoading) return <>Loading...</>
+
   return (
-    <AuthContext.Provider value={{ user, login, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, login, signUp, signOut, refresh }}>
       { children }
     </AuthContext.Provider>
   )

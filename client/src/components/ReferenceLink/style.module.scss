@@ -56,7 +56,7 @@
 }
 
 // Dark theme
-.reference_link_box {
+.reference_link_box[data-theme="dark"] {
   border: 1px solid colors.$input-border-primary-selected-dark;
   background-color: colors.$input-bg-primary-dark;
 

@@ -15,6 +15,7 @@ export interface GetNewAccessTokenResponse {
   refreshToken: string
 }
 
-export type Login = (uersename: string, password: string) => Promise<void>
+export type Login = (uersename: string, password: string, remember?: boolean) => Promise<void>
 export type SignUp = (uersename: string, password: string) => Promise<void>
 export type SignOut = () => Promise<void>
+export type Refresh = () => Promise<string>
