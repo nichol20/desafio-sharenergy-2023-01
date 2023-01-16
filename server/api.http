@@ -89,6 +89,6 @@ Content-Type: application/json
 
 
 ### ----------------- IMAGE -----------------
-###
-GET http://localhost:5000/images/client-icons
+### for this route to work you need to change the cookie secure option to false
+GET http://localhost:5000/images/client-icons 
 Authorization: Bearer token
