@@ -7,7 +7,7 @@ import { useDebounce } from '../../hooks/useDebounce'
 import { Client } from '../../types/user'
 
 import { lowerCase } from '../../utils/functions'
-import { Pagination, SearchInput, IconsPicker, HighlightableText } from '..'
+import { Pagination, SearchInput, HighlightableText } from '..'
 import { ClientModal } from '../ClientModal'
 
 import { addIcon, personIcon } from '../../assets'
@@ -25,8 +25,10 @@ export const ClientsRegistrationPage = () => {
   const { theme } = useContext(ThemeContext)
   const httpPrivate = useHttpPrivate()
 
+  const [ isLoaded, setIsLoaded ] = useState(false)
+
   const [ clients, setClients ] = useState<Client[]>(user!.clientList)
-  const [ filteredClients, setFilteredClients ] = useState<Client[]>(user!.clientList)
+  const [ filteredClients, setFilteredClients ] = useState<Client[]>(user!.clientList.reverse())
 
   const [ searchParams, setSearchParams ] = useSearchParams();
   const [ searchValue, setSearchValue ] = useState(searchParams.get('search') || '')
@@ -51,18 +53,10 @@ export const ClientsRegistrationPage = () => {
 
   const openModal = () => {
     setShowModal(true)
-    requestAnimationFrame(() => {
-      const clientModalEl = document.querySelector(`.${styles.client_modal}`)
-      clientModalEl?.classList.add(styles.active)
-    })
   }
 
   const closeModal = () => {
-    const clientModalEl = document.querySelector(`.${styles.client_modal}`)
-    clientModalEl?.classList.remove(styles.active)
-    setTimeout(() => {
-      setShowModal(false)
-    }, 100)
+    setShowModal(false)
   }
 
   const handleClientCardClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
@@ -75,7 +69,7 @@ export const ClientsRegistrationPage = () => {
     try {
       const { data } = await httpPrivate.get('/clients')
       setClients(data)
-      setFilteredClients(data)
+      setFilteredClients(data.reverse())
     } catch (error) {
       if(filterClients.length < 0) {
         toastRef.current?.toast('Não foi possível buscar seus clients', 'Erro na busca', 'error')
@@ -108,6 +102,7 @@ export const ClientsRegistrationPage = () => {
        || lowerCase(name).includes(lowerCase(searchValue))
     })
     const searchParam = searchValue.length > 0 ? `search=${searchValue}` : ''
+    
     setSearchParams(`?page=1&${searchParam}`)
     setFilteredClients(filtered)
   }
@@ -118,7 +113,10 @@ export const ClientsRegistrationPage = () => {
 
   // triggers the function after a while that the user stops typing
   useEffect(() => {
-    filterClients()
+    if(isLoaded) {
+      filterClients()
+    }
+    setIsLoaded(true)
   }, [debouncedSearchValue])
 
   return (
@@ -160,7 +158,7 @@ export const ClientsRegistrationPage = () => {
           })
         }
       </div>
-      <Pagination baseUrl='/clients-registration' currentPage={currentPage} lastPage={lastPage} />
+      <Pagination path='/clients-registration' currentPage={currentPage} lastPage={lastPage} />
       <button className={styles.add_button} onClick={handleAddButtonClick}>
         <img src={addIcon} alt='add' />
       </button>

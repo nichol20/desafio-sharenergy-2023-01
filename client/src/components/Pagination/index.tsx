@@ -8,10 +8,10 @@ import styles from './style.module.scss'
 interface PaginationProps {
   currentPage: number
   lastPage: number
-  baseUrl: string
+  path: string
 }
 
-export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) => {
+export const Pagination = ({ currentPage, lastPage, path }: PaginationProps) => {
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const isTherePreviousPage = currentPage - 1 >= 1
@@ -24,7 +24,7 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
     <ul className={styles.pagination} data-theme={theme}>
       {
         isTherePreviousPage && (
-          <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage - 1}`)}>
+          <li className={styles.page_item} onClick={() => navigate(`${path}?page=${currentPage - 1}`)}>
             <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
           </li>
         )
@@ -57,7 +57,7 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
             return (
               <li
               className={`${styles.page_item} ${isActive ? styles.active : ''}`}
-              onClick={() => navigate(`${baseUrl}?page=${index}`)}
+              onClick={() => navigate(`${path}?page=${index}`)}
               key={index}
               >
                 {index}
@@ -72,7 +72,7 @@ export const Pagination = ({ currentPage, lastPage, baseUrl }: PaginationProps) 
       }
       {
         isThereNextPage && (
-          <li className={styles.page_item} onClick={() => navigate(`${baseUrl}?page=${currentPage + 1}`)}>
+          <li className={styles.page_item} onClick={() => navigate(`${path}?page=${currentPage + 1}`)}>
             <img src={chevronForwardIcon} alt="chevron" className={styles.icon} />
           </li>
         )

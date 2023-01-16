@@ -18,6 +18,8 @@ const initialApiUrl = `${randomUserApiUrl}?results=500`
 export const RandomUsersPage = () => {
   const { theme } = useContext(ThemeContext)
 
+  const [ isLoaded, setIsLoaded ] = useState(false)
+
   const [ searchParams, setSearchParams ] = useSearchParams();
   const [ searchValue, setSearchValue ] = useState(searchParams.get('search') || '')
   const debouncedSearchValue = useDebounce(searchValue, 300)
@@ -63,13 +65,18 @@ export const RandomUsersPage = () => {
   }, [])
 
   useEffect(() => {
-    if(users.length > 0) filterUser()
+    if(isLoaded) {
+      if(users.length > 0) filterUser()
+    }
   }, [ users ])
 
 
   // triggers the function after a while that the user stops typing
   useEffect(() => {
-    filterUser()
+    if(isLoaded) {
+      filterUser()
+    }
+    setIsLoaded(true)
   }, [debouncedSearchValue])
 
   return (
@@ -120,7 +127,7 @@ export const RandomUsersPage = () => {
           }
         </div>
       </div>
-      <Pagination baseUrl='/' currentPage={currentPage} lastPage={lastPage} />
+      <Pagination path='/' currentPage={currentPage} lastPage={lastPage} />
       <ToastContainer ref={toastRef} />
     </div>
   )

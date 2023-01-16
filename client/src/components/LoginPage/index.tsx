@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { AuthContext } from '../../contexts/AuthContext'
 import { ThemeContext } from '../../contexts/ThemeContext'
-import { useHttpPrivate } from '../../hooks/useHttpPrivate'
 import { CustomCheckbox } from '../CustomCheckbox'
 import { ToastContainer, ToastRef } from '../ToastContainer'
 

@@ -10,17 +10,16 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5000/login
+GET http://localhost:5000/users/profile
+Authorization: Bearer token
+
+###
+POST http://localhost:5000/users/check-username-status
 Content-Type: application/json
 
 {
-  "username": "test",
-  "password": "test123"
+  "username": "desafiosharenergy"
 }
-
-###
-GET http://localhost:5000/users/profile
-Authorization: Bearer token
 
 ###
 GET http://localhost:5000/users
@@ -45,23 +44,15 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5000/users/check-username-status
-Content-Type: application/json
-
-{
-  "username": "desafiosharenergy"
-}
-
-###
 GET http://localhost:5000/clients
 Authorization: Bearer token
 
 ###
-GET http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
+GET http://localhost:5000/clients/clientId
 Authorization: Bearer token
 
 ###
-PATCH http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
+PATCH http://localhost:5000/clients/clientId
 Authorization: Bearer token
 Content-Type: application/json
 
@@ -74,11 +65,20 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:5000/clients/5a02a8c0-5b3b-4b82-9460-ff887c2e3dd3
+DELETE http://localhost:5000/clients/clientId
 Authorization: Bearer token
 
 
 ### ----------------- AUTH -----------------
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test123"
+}
+
 ###
 POST http://localhost:5000/refresh-token
 Content-Type: application/json
@@ -87,8 +87,15 @@ Content-Type: application/json
   "refreshToken": "token"
 }
 
+###
+GET http://localhost:5000/remember
+Authorization: Bearer token
+
+###
+GET http://localhost:5000/logout
+
 
 ### ----------------- IMAGE -----------------
-### for this route to work you need to change the cookie secure option to false
+### for this route to work you need to change the cookie secure option to false in server route
 GET http://localhost:5000/images/client-icons 
 Authorization: Bearer token

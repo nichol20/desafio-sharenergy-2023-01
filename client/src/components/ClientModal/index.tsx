@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 
-import { http } from '../../utils/http'
 import { Client } from '../../types/user'
 import { ConfirmationModal, IconsPicker, ToastContainer } from '../'
 import { ToastRef } from '../ToastContainer'
@@ -106,9 +105,11 @@ export const ClientModal = ({ onClose, type, client, refreshClients }: ClientMod
       try {
         const { data } = await httpPrivate.get('/images/client-icons')
         
-        setIcons([personIcon, ...data])
+        setIcons([personIcon, ...data.urls])
       } catch (error) {
-        
+        if(icons.length === 0) {
+          toastRef.current?.toast('Não foi possível buscar os ícones', 'Erro na busca', 'error')
+        }
       }
     }
 

@@ -14,3 +14,12 @@
   width: 100%;
   text-align: center;
 }
+
+// Dark mode
+.error_page[data-theme="dark"] {
+  background-color: colors.$main-bg-dark;
+
+  .content {
+    @include mixins.whiteFilter();
+  }
+}
