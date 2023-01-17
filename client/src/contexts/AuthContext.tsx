@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     setUser({...profileResponse.data, accessToken: refreshTokenResponse.data.accessToken })
     return refreshTokenResponse.data.accessToken
-}
+  }
 
   const login: Login = async (username, password, remember) => {
     const { data }: AxiosResponse<LoginResponse> = await http.post('/login', 
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             console.error(err)
         }
         finally {
-            setIsLoading(false);
+            setIsLoading(false)
         }
     }
 

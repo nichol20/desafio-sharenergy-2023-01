@@ -25,7 +25,6 @@ export const useHttpPrivate: UseHttpPrivate = () => {
         const responseIntercept = http.interceptors.response.use(
             response => response,
             async error => {
-                console.log(error)
                 const prevRequest = error?.config
                 if (error?.response?.status === 403 && !prevRequest?.sent) {
                     prevRequest.sent = true

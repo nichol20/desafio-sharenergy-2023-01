@@ -56,9 +56,9 @@ export const Pagination = ({ currentPage, lastPage, path }: PaginationProps) => 
           if(((isCurrentPageOrClose && !isLastPageOrClose) || isFirstPage) || (isLastPageOrClose || isLastPage)) {
             return (
               <li
-              className={`${styles.page_item} ${isActive ? styles.active : ''}`}
-              onClick={() => navigate(`${path}?page=${index}`)}
-              key={index}
+               className={`${styles.page_item} ${isActive ? styles.active : ''}`}
+               onClick={() => navigate(`${path}?page=${index}`)}
+               key={index}
               >
                 {index}
               </li>

@@ -19,7 +19,7 @@ authRoutes.get('/refresh-token', async (req, res) => {
     const userController = new UserController
     const user = await userController.findOne(sub!)
 
-    if(!user) return res.sendStatus(403);
+    if(!user) return res.sendStatus(403)
 
     const newAccessToken = authController.generateAccessToken({}, { subject: sub })
 
@@ -97,6 +97,6 @@ authRoutes.get('/logout', async (req, res) => {
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true });
     return res.sendStatus(200)
   } catch (error) {
-    return res.status(500).json({ message: 'Something broke' })
+    return res.sendStatus(403)
   }
 })
